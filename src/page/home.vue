@@ -1,8 +1,8 @@
 <template>
   <div class="waaper">
-    <img src="../assets/login.png" alt="" class="log">
+    <img src="http://img5.168trucker.com/topic/images/worldCup/login.png" alt="" class="log">
     <div class="banner">
-      <img src="../assets/banner.png" alt="">
+      <img src="http://img5.168trucker.com/topic/images/worldCup/banner.png" alt="">
       <span href="" class="rule" @click="showRule">活动规则</span>
       <span href="" class="price" @click="showPriceRule">奖项设置</span>
     </div>
@@ -56,7 +56,7 @@ export default {
     width: 100%;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    background: url('../assets/bg.jpg') 50% 50% no-repeat;
+    background: url('http://img5.168trucker.com/topic/images/worldCup/bg.jpg') 50% 50% no-repeat;
     background-size: cover;
     position: relative;
     display: flex;
@@ -80,7 +80,7 @@ export default {
         font-size: 0;
       }
       .rule{
-        background: url('../assets/rule-btn.png') 50% 50% no-repeat;
+        background: url('http://img5.168trucker.com/topic/images/worldCup/rule-btn.png') 50% 50% no-repeat;
         background-size: cover;
         width: 251px;
         height: 143px;
@@ -88,7 +88,7 @@ export default {
         top:530px;
       }
       .price{
-        background: url('../assets/price-set.png') 50% 50% no-repeat;
+        background: url('http://img5.168trucker.com/topic/images/worldCup/price-set.png') 50% 50% no-repeat;
         background-size: cover;
         width: 249px;
         height: 141px;
@@ -104,20 +104,20 @@ export default {
         display: inline-block;
       }
       .rank-btn{
-        background: url('../assets/rank-btn.png') 50% 50% no-repeat;
+        background: url('http://img5.168trucker.com/topic/images/worldCup/rank-btn.png') 50% 50% no-repeat;
         background-size: cover;
         width: 165px;
         height: 149px;
       }
       .to-join{
-        background: url('../assets/join-btn.png') 50% 50% no-repeat;
+        background: url('http://img5.168trucker.com/topic/images/worldCup/join-btn.png') 50% 50% no-repeat;
         background-size: cover;
         width: 471px;
         height: 149px;
         margin-left: -30px;
       }
       .my-action{
-        background: url('../assets/my-jingcai-btn.png') 50% 50% no-repeat;
+        background: url('http://img5.168trucker.com/topic/images/worldCup/my-jingcai-btn.png') 50% 50% no-repeat;
         background-size: cover;
         width: 172px;
         height: 149px;

@@ -9,7 +9,7 @@
     <div class="main">
       <ul>
         <li v-for="(item ,index) in jingc" :key="index">
-          <img src="../assets/field1.png" class="title" alt="">
+          <img src="http://img5.168trucker.com/topic/images/worldCup/field1.png" class="title" alt="">
           <div class="betting-box">
             <div class="header">
               投注方式：3串1
@@ -45,15 +45,15 @@ export default {
           total: 30,
           team: [
             {
-              teamImg: '../assets/price1.png',
+              teamImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
               result: 'win'
             },
             {
-              teamImg: '../assets/price1.png',
+              teamImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
               result: 'fail'
             },
             {
-              teamImg: '../assets/price1.png',
+              teamImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
               result: 'flat'
             }
           ]
@@ -62,15 +62,15 @@ export default {
           total: 30,
           team: [
             {
-              teamImg: '../assets/price1.png',
+              teamImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
               result: 'flat'
             },
             {
-              teamImg: '../assets/price1.png',
+              teamImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
               result: 'fail'
             },
             {
-              teamImg: '../assets/price1.png',
+              teamImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
               result: 'fail'
             }
           ]
@@ -79,11 +79,11 @@ export default {
           total: 30,
           team: [
             {
-              teamImg: '../assets/price1.png',
+              teamImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
               result: 'fail'
             },
             {
-              teamImg: '../assets/price1.png',
+              teamImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
               result: 'win'
             }
           ]
@@ -121,7 +121,7 @@ export default {
     height: 100%;
     width: 100%;
    overflow: hidden;
-    background: url('../assets/bg-two.jpg') 50% 50% no-repeat;
+    background: url('http://img5.168trucker.com/topic/images/worldCup/bg-two.jpg') 50% 50% no-repeat;
     background-size: cover;
     position: relative;
     display: flex;
@@ -131,7 +131,7 @@ export default {
     margin:0 auto;
     position: relative;
     width: 690px;
-    background: url('../assets/model-bg.png') no-repeat;
+    background: url('http://img5.168trucker.com/topic/images/worldCup/model-bg.png') no-repeat;
     max-height: 1058px;
     padding-top: 60px;
     box-sizing: border-box;
@@ -150,7 +150,7 @@ export default {
       align-items: center;
       .betting-box{
         margin: 24px auto 30px;
-        background: url('../assets/card-bg.png') no-repeat;
+        background: url('http://img5.168trucker.com/topic/images/worldCup/card-bg.png') no-repeat;
         width: 572px;
         height: 230px;
         display: flex;
@@ -209,15 +209,15 @@ export default {
               display: block;
             }
             &.win::after{
-              background: url('../assets/win.png') 50% 50% no-repeat;
+              background: url('http://img5.168trucker.com/topic/images/worldCup/win.png') 50% 50% no-repeat;
               background-size: cover;
             }
             &.fail::after{
-              background: url('../assets/fail.png') 50% 50% no-repeat;
+              background: url('http://img5.168trucker.com/topic/images/worldCup/fail.png') 50% 50% no-repeat;
               background-size: cover;
             }
             &.flat::after{
-              background: url('../assets/flat.png') 50% 50% no-repeat;
+              background: url('http://img5.168trucker.com/topic/images/worldCup/flat.png') 50% 50% no-repeat;
               background-size: cover;
             }
           }

@@ -7,7 +7,7 @@
     </HeaderTop>
     <div class="main-bg">
       <div class="main" v-if="!SubmitStatus">
-        <img src="../assets/betting-title.png" class="title" alt="">
+        <img src="http://img5.168trucker.com/topic/images/worldCup/betting-title.png" class="title" alt="">
         <ul>
           <li v-for="(item,index) in betting" :key="index">
             <div class="team">
@@ -18,7 +18,7 @@
             </div>
             <div class="team">
               <figure>
-                <img src="../assets/win.png" alt="">
+                <img src="http://img5.168trucker.com/topic/images/worldCup/win.png" alt="">
               </figure>
               <span>胜</span>
             </div>
@@ -52,25 +52,25 @@ export default {
       SubmitStatus: false,
       betting: [
         {
-          teamAImg: '../assets/price1.png',
+          teamAImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
           teamAName: 'sdsad',
           teamBName: 'b萨达萨达',
           result: '0',
-          teamBImg: '../assets/price1.png'
+          teamBImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png'
         },
         {
-          teamAImg: '../assets/price1.png',
+          teamAImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
           teamAName: 'sds2ad',
           teamBName: 'b萨达2萨达',
           result: '0',
-          teamBImg: '../assets/price1.png'
+          teamBImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png'
         },
         {
-          teamAImg: '../assets/price1.png',
+          teamAImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
           teamAName: 'sds2ad',
           teamBName: 'b萨达3萨达',
           result: '0',
-          teamBImg: '../assets/price1.png'
+          teamBImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png'
         }
       ]
     }
@@ -108,7 +108,7 @@ export default {
     height: 100%;
     width: 100%;
     overflow: hidden;
-    background: url('../assets/bg-two.jpg') 50% 50% no-repeat;
+    background: url('http://img5.168trucker.com/topic/images/worldCup/bg-two.jpg') 50% 50% no-repeat;
     background-size: cover;
     position: relative;
     display: flex;
@@ -118,7 +118,7 @@ export default {
     margin:0 auto;
     position: relative;
     width: 690px;
-    background: url('../assets/model-bg.png') no-repeat;
+    background: url('http://img5.168trucker.com/topic/images/worldCup/model-bg.png') no-repeat;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -138,7 +138,7 @@ export default {
         margin:24px auto;
       }
       li{
-        background: url('../assets/card-bg.png') no-repeat;
+        background: url('http://img5.168trucker.com/topic/images/worldCup/card-bg.png') no-repeat;
         width: 572px;
         height: 230px;
         display: flex;
@@ -179,7 +179,7 @@ export default {
       }
       .next{
         margin: 20px auto 34px;
-         background: url('../assets/next.png') no-repeat;
+         background: url('http://img5.168trucker.com/topic/images/worldCup/next.png') no-repeat;
          width: 320px;
          height: 96px;
          font-size: 0;

@@ -56,7 +56,7 @@ export default {
     margin:150px 30px 0;
     position: relative;
     width: 690px;
-    background: url('../assets/model-bg.png');
+    background: url('http://img5.168trucker.com/topic/images/worldCup/model-bg.png');
     height: 1058px;
     .close{
       width: 88px;
@@ -68,7 +68,7 @@ export default {
     }
     .title{
       margin:60px auto 30px;
-      background: url('../assets/rule-title.png') 50% 50%;
+      background: url('http://img5.168trucker.com/topic/images/worldCup/rule-title.png') 50% 50%;
       background-size: cover;
       width: 350px;
       height: 88px;
@@ -87,7 +87,7 @@ export default {
     }
     .know{
       margin:30px auto;
-      background: url('../assets/know.png') 50% 50%;
+      background: url('http://img5.168trucker.com/topic/images/worldCup/know.png') 50% 50%;
       background-size: cover;
       width: 320px;
       height: 96px;

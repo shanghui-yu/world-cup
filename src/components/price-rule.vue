@@ -8,7 +8,7 @@
       <h3 class="title">奖项设置</h3>
       <div class="price">
         <figure>
-          <img src="../assets/price1.png" alt="">
+          <img src="http://img5.168trucker.com/topic/images/worldCup/price1.png" alt="">
         </figure>
         <h5>一等奖：共3名</h5>
         <span class="des">取积分榜前3名, 55寸智能液晶电视</span>
@@ -16,14 +16,14 @@
       <div class="price-box">
         <div class="price">
           <figure>
-            <img src="../assets/price2.png" alt="">
+            <img src="http://img5.168trucker.com/topic/images/worldCup/price2.png" alt="">
           </figure>
           <h5>二等奖：共5名</h5>
           <span class="des">取积分榜4-9名<br>锤子新一代智能手机</span>
         </div>
         <div class="price">
           <figure>
-            <img src="../assets/price3.png" alt="">
+            <img src="http://img5.168trucker.com/topic/images/worldCup/price3.png" alt="">
           </figure>
            <h5>三等奖：共10名</h5>
            <span class="des">取积分榜10-19名<br>奔驰车载蓝牙音箱</span>
@@ -78,7 +78,7 @@ export default {
     margin:150px 30px 0;
     position: relative;
     width: 690px;
-    background: url('../assets/model-bg.png') no-repeat;
+    background: url('http://img5.168trucker.com/topic/images/worldCup/model-bg.png') no-repeat;
     height: 1058px;
     .close{
       width: 88px;
@@ -90,7 +90,7 @@ export default {
     }
     .title{
       margin:60px auto 30px;
-      background: url('../assets/price-title.png') 50% 50%;
+      background: url('http://img5.168trucker.com/topic/images/worldCup/price-title.png') 50% 50%;
       background-size: cover;
       width: 350px;
       height: 88px;
@@ -134,7 +134,7 @@ export default {
     }
     .know{
       margin:30px auto;
-      background: url('../assets/know.png') 50% 50%;
+      background: url('http://img5.168trucker.com/topic/images/worldCup/know.png') 50% 50%;
       background-size: cover;
       width: 320px;
       height: 96px;

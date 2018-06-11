@@ -29,28 +29,28 @@ export default {
 
 <style scoped lang="less">
  header{
-  background: url('../assets/banner.png') 0 -330px no-repeat;
+  background: url('http://img5.168trucker.com/topic/images/worldCup/banner.png') 0 -330px no-repeat;
   flex: 1;
   span{
     display: block;
     float: left;
   }
   .rule{
-    background: url('../assets/rule-btn.png') 50% 50% no-repeat;
+    background: url('http://img5.168trucker.com/topic/images/worldCup/rule-btn.png') 50% 50% no-repeat;
     background-size: cover;
     width: 251px;
     height: 143px;
     margin-left: 20px;
   }
   .home{
-    background: url('../assets/back-home.png') 50% 50% no-repeat;
+    background: url('http://img5.168trucker.com/topic/images/worldCup/back-home.png') 50% 50% no-repeat;
     background-size: cover;
     width: 198px;
     height: 131px;
     margin-top: 18px;
   }
   .price-btn{
-    background: url('../assets/price-set.png') 50% 50% no-repeat;
+    background: url('http://img5.168trucker.com/topic/images/worldCup/price-set.png') 50% 50% no-repeat;
     background-size: cover;
     width: 249px;
     height: 141px;

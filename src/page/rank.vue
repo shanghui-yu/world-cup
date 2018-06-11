@@ -97,7 +97,7 @@ export default {
     height: 100%;
     width: 100%;
     overflow: hidden;
-    background: url('../assets/bg-two.jpg') 50% 50% no-repeat;
+    background: url('http://img5.168trucker.com/topic/images/worldCup/bg-two.jpg') 50% 50% no-repeat;
     background-size: cover;
     position: relative;
     display: flex;
@@ -108,13 +108,13 @@ export default {
     margin:0 auto;
     position: relative;
     width: 690px;
-    background: url('../assets/model-bg.png') no-repeat;
+    background: url('http://img5.168trucker.com/topic/images/worldCup/model-bg.png') no-repeat;
     height: 1058px;
     display: flex;
     flex-direction: column;
     .title{
       margin:60px auto 0px;
-      background: url('../assets/rank-title.png') 50% 50%;
+      background: url('http://img5.168trucker.com/topic/images/worldCup/rank-title.png') 50% 50%;
       background-size: cover;
       width: 350px;
       height: 88px;
@@ -154,7 +154,7 @@ export default {
       height: 80px;
       border-bottom: 1px solid #28600e;
       &:nth-child(1){
-        background: url('../assets/rank1.png') no-repeat;
+        background: url('http://img5.168trucker.com/topic/images/worldCup/rank1.png') no-repeat;
         height: 104px;
         border:none;
         .one{
@@ -162,7 +162,7 @@ export default {
         }
       }
       &:nth-child(2){
-        background: url('../assets/rank2.png') no-repeat;
+        background: url('http://img5.168trucker.com/topic/images/worldCup/rank2.png') no-repeat;
         height: 104px;
         border:none;
         .one{
@@ -170,7 +170,7 @@ export default {
         }
       }
       &:nth-child(3){
-        background: url('../assets/rank3.png') no-repeat;
+        background: url('http://img5.168trucker.com/topic/images/worldCup/rank3.png') no-repeat;
         height: 104px;
         border:none;
         .one{
