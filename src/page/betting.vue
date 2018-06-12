@@ -8,17 +8,25 @@
         <span class="price-btn" @click="showPriceRule">奖项设置</span>
       </div>
       <div class="table">
-          <div class="card" @click="showPrice(item)" v-for="(item ,ind) in cards.imgs" :key="ind">
+          <div class="card" @click="showResult(item,ind)" v-for="(item ,ind) in cards.imgs" :key="ind">
             <!-- 默认卡牌 -->
             <figure class="defalt"><img :src="item" alt=""></figure>
             <div class="result" :total="items.type" v-for="items in result" v-if="items.index == ind" :key="items.id">
-              <figure><img :src="item" alt="">{{ind}}</figure>
+              <figure><img :src="items.team_A_logo" alt=""></figure>
             </div>
           </div>
-          <div class="table-btn"></div>
+          <div :class="[bettingStatus?'submit':'table-btn']" @click="again"></div>
       </div>
     </header>
-    <Guessing v-show="showResultStatus" @showResult="showResult"></Guessing>
+    <!-- 翻牌结果 -->
+    <Guessing 
+      v-if="showResultStatus" 
+      :selectObj = "selectimg"
+      :matchList="cards.matchList"
+      @showResult="showResult"
+      @select="select">
+    </Guessing>
+
     <Rule v-show="showRuleStatus" @showRule="showRule"></Rule>
     <priceRule v-show="showPriceRuleStatus" @showPriceRule="showPriceRule"></priceRule>
   </div>
@@ -34,9 +42,11 @@ export default {
       showResultStatus: false,
       showRuleStatus: false,
       showPriceRuleStatus: false,
-      result: [],
       // 当前选择品牌
-      selectObj: {},
+      selectimg: {},
+      selectIndex:null,
+      // 翻牌状态
+      bettingStatus:0,
       cards: {
         'imgs': [
           'http://img5.168trucker.com/worldcup/1/1-1/1.png!600',
@@ -91,6 +101,9 @@ export default {
     priceRule,
     Guessing
   },
+  computed: {
+    result () { return this.$store.state.selectObj },
+  },
   created () {
   },
   mounted () {
@@ -106,11 +119,40 @@ export default {
     tohome () {
       this.jump('/')
     },
-    showResult () {
+    // 显示奖项
+    /*
+      如果没有点击过翻牌 bettingStatus为false代表洗牌第一次点击把洗牌更改为确定
+      翻牌以后设置当前选择的图片
+    */
+    showResult (img,index) {
+      if(this.result.length>2){
+        alert('没人每轮只能选择三次')
+        return
+      }
       this.showResultStatus = !this.showResultStatus
+      if(img){
+        this.selectimg = img
+      }
+      if(index){
+        this.selectIndex = index
+      }
     },
-    showPrice (item) {
-      this.showResultStatus = !this.showResultStatus
+
+    // 洗牌或提交
+    again(){
+      if(!this.bettingStatus){
+        console.log('洗牌');
+      }else{
+        console.log('提交');
+        this.jump('/BettingOk')
+      }
+    },
+    select(json){
+      json.index= this.selectIndex
+      this.$store.dispatch('selectObjFun', json)
+      if(!this.bettingStatus){
+        this.bettingStatus = 1
+      }
     }
   }
 }
@@ -229,13 +271,16 @@ export default {
           }
         }
       }
-      .table-btn{
+      .table-btn,.submit{
         position: absolute;
         left: 246px;
         top:246px;
         width: 201px;
         height: 201px;
         background: url('http://img5.168trucker.com/topic/images/worldCup/again.png') no-repeat;
+      }
+      .submit{
+        background: url('http://img5.168trucker.com/topic/images/worldCup/ok.png') no-repeat;
       }
     }
   }

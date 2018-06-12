@@ -34,6 +34,7 @@ export default {
   span{
     display: block;
     float: left;
+    animation:flash 5s infinite linear;
   }
   .rule{
     background: url('http://img5.168trucker.com/topic/images/worldCup/rule-btn.png') 50% 50% no-repeat;

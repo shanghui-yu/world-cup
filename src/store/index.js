@@ -3,24 +3,17 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
-    countDownSeconds: 12,
-    currentSeconds: 12
+    selectObj: []
   },
   mutations: {
-    countDownSeconds (state, b) {
-      state.countDownSeconds = b
+    selectObjFun (state, b) {
+      state.selectObj.push(b)
     },
-    currentSeconds (state, b) {
-      state.currentSeconds = b
-    }
   },
   actions: {
-    countDownSeconds (context, b) {
-      context.commit('countDownSeconds', b)
+    selectObjFun (context, b) {
+      context.commit('selectObjFun', b)
     },
-    currentSeconds (context, b) {
-      context.commit('currentSeconds', b)
-    }
   }
 })
 

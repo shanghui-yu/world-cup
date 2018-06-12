@@ -12,21 +12,30 @@
           <li v-for="(item,index) in betting" :key="index">
             <div class="team">
               <figure>
-                <img :src="item.teamAImg" alt="">
+                <img :src="item.team_A_logo" alt="">
               </figure>
-              <span>{{item.teamAName}}</span>
+              <span>{{item.team_A_name}}</span>
             </div>
             <div class="team">
               <figure>
-                <img src="http://img5.168trucker.com/topic/images/worldCup/win.png" alt="">
+                <img 
+                  src="http://img5.168trucker.com/topic/images/worldCup/win.png" 
+                  v-if="item.type=='胜'" alt="">
+                <img src="http://img5.168trucker.com/topic/images/worldCup/fail.png" 
+                  v-if="item.type=='负'"
+                  alt="">
+                <img 
+                  src="http://img5.168trucker.com/topic/images/worldCup/flat.png" 
+                  v-if="item.type=='平'"
+                  alt="">
               </figure>
-              <span>胜</span>
+              <span>{{item.type}}</span>
             </div>
             <div class="team">
               <figure>
-                <img :src="item.teamBImg" alt="">
+                <img :src="item.team_B_logo" alt="">
               </figure>
-              <span>{{item.teamBName}}</span>
+              <span>{{item.team_B_name}}</span>
             </div>
           </li>
         </ul>
@@ -50,29 +59,29 @@ export default {
       showRuleStatus: false,
       showPriceRuleStatus: false,
       SubmitStatus: false,
-      betting: [
-        {
-          teamAImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
-          teamAName: 'sdsad',
-          teamBName: 'b萨达萨达',
-          result: '0',
-          teamBImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png'
-        },
-        {
-          teamAImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
-          teamAName: 'sds2ad',
-          teamBName: 'b萨达2萨达',
-          result: '0',
-          teamBImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png'
-        },
-        {
-          teamAImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
-          teamAName: 'sds2ad',
-          teamBName: 'b萨达3萨达',
-          result: '0',
-          teamBImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png'
-        }
-      ]
+      // betting: [
+      //   {
+      //     teamAImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
+      //     teamAName: 'sdsad',
+      //     teamBName: 'b萨达萨达',
+      //     result: '0',
+      //     teamBImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png'
+      //   },
+      //   {
+      //     teamAImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
+      //     teamAName: 'sds2ad',
+      //     teamBName: 'b萨达2萨达',
+      //     result: '0',
+      //     teamBImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png'
+      //   },
+      //   {
+      //     teamAImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
+      //     teamAName: 'sds2ad',
+      //     teamBName: 'b萨达3萨达',
+      //     result: '0',
+      //     teamBImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png'
+      //   }
+      // ]
     }
   },
   components: {
@@ -80,6 +89,9 @@ export default {
     Rule,
     priceRule,
     SubmitOk
+  },
+  computed: {
+    betting () { return this.$store.state.selectObj },
   },
   created () {
   },

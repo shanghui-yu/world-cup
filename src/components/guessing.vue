@@ -3,18 +3,25 @@
   <div class="pop">
    <div class="close"  @click="showResult"></div>
    <div class="main">
-     <figure><img src="" alt=""></figure>
-     <span class="name">俄罗斯队</span>
+     <figure>
+      <img :src="selectObj" alt="" :class="['fileinY',flipInY?'hide':'',showPrice?'none':'']">
+      <img :src="resultTeam.team_A_logo" alt="" :class="['resultImg',showPrice?'show':'']">
+    </figure>
+     <span class="name">{{resultTeam.team_A_name}}</span>
      <span class="des">世界杯口号世界杯口号世界杯口号世界杯口号。</span>
    </div>
    <div class="footer">
      <p class="tip">请选择您的竞猜胜负</p>
      <div class="betting">
-       <div class="win">
+       <div class="win" @click="select('胜')">
          <figure><img src="http://img5.168trucker.com/topic/images/worldCup/win.png" alt=""></figure>
        </div>
-       <div class="flat"><figure><img src="http://img5.168trucker.com/topic/images/worldCup/flat.png" alt=""></figure></div>
-       <div class="fail"><figure><img src="http://img5.168trucker.com/topic/images/worldCup/fail.png" alt=""></figure></div>
+       <div class="flat" @click="select('平')">
+         <figure><img src="http://img5.168trucker.com/topic/images/worldCup/flat.png" alt=""></figure>
+      </div>
+       <div class="fail" @click="select('负')">
+         <figure><img src="http://img5.168trucker.com/topic/images/worldCup/fail.png" alt=""></figure>
+      </div>
      </div>
    </div>
   </div>
@@ -23,14 +30,43 @@
 
 <script>
 export default {
+  props:['selectObj','matchList'],
   data () {
     return {
-      msg: ''
+      msg: '',
+      defalts:'100',
+      // 翻牌
+      flipInY:0,
+      // 显示结果
+      showPrice:0,
+      resultTeam:{}
     }
+  },
+  created(){
+    
+  },
+  mounted(){
+    setTimeout(() => {
+      this.flipInY = 1
+      this.getMathPrice()
+      setTimeout(() => {
+        this.showPrice = 1
+      }, 500);
+    }, 500);
   },
   methods: {
     showResult () {
       this.$emit('showResult')
+    },
+    select(e){
+      this.showResult()
+      this.resultTeam.type = e
+      this.$emit('select',this.resultTeam)
+    },
+    getMathPrice(){
+      let n = Math.floor(Math.random() * this.matchList.length + 1)-1;  
+      this.resultTeam = this.matchList[n]
+      this.matchList.splice(n,1)
     }
   }
 }
@@ -79,16 +115,37 @@ export default {
     color: #fff;
     margin-top: 225px;
     figure{
-      width: 318px;
-      height: 318px;
-      border:1px solid #fff;
-      border-radius: 50%;
-      overflow: hidden;
+      width: 320px;
+      height: 320px;
       margin:54px auto 30px;
+      text-align: center;
+      position: relative;
       img{
+        border:1px solid #fff;
+        border-radius: 50%;
+        overflow: hidden;
         width: 100%;
         height: 100%;
         object-fit: cover;
+      }
+      .resultImg{
+        width: 0;
+        opacity: 0;
+        transition: all 0.5s ease;
+        &.show{
+          width: 100%;
+          opacity: 1;
+        }
+      }
+      .fileinY{
+        width: 100%;
+        transition: all 0.5s ease;
+        &.hide{
+          width: 0;
+        }
+        &.none{
+          display: none;
+        }
       }
     }
     .name{

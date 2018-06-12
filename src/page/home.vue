@@ -2,9 +2,9 @@
   <div class="waaper">
     <img src="http://img5.168trucker.com/topic/images/worldCup/login.png" alt="" class="log">
     <div class="banner">
-      <img src="http://img5.168trucker.com/topic/images/worldCup/banner.png" alt="">
-      <span href="" class="rule" @click="showRule">活动规则</span>
-      <span href="" class="price" @click="showPriceRule">奖项设置</span>
+      <img  :class="[beginAnimation?'bounceInDown animated':'swing animated']" src="http://img5.168trucker.com/topic/images/worldCup/banner.png" :style="{marginTop:mtop}" alt="">
+      <span class="rule" @click="showRule" :style="{top:top}">活动规则</span>
+      <span class="price" @click="showPriceRule" :style="{top:top}">奖项设置</span>
     </div>
 
     <footer>
@@ -23,6 +23,9 @@ import priceRule from '../components/price-rule.vue'
 export default {
   data () {
     return {
+      mtop:'200px',
+      top:'530px',
+      beginAnimation:false,
       showRuleStatus: false,
       showPriceRuleStatus: false
     }
@@ -35,6 +38,17 @@ export default {
     // setTimeout(() => {
     //   this.jump('/BettingOk')
     // }, 300)
+    if(window.innerHeight<1182){
+     this.mtop ='115px'
+     this.top='445px'
+      
+    }
+    setTimeout(() => {
+      this.beginAnimation =true
+      setTimeout(() => {
+        this.beginAnimation =false
+      }, 500);
+    }, 200);
   },
   mounted () {
 
@@ -56,7 +70,7 @@ export default {
     width: 100%;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    background: url('http://img5.168trucker.com/topic/images/worldCup/bg.jpg') 50% 50% no-repeat;
+    background: url('http://img5.168trucker.com/topic/images/worldCup/bg-new.jpg') 50% 50% no-repeat;
     background-size: cover;
     position: relative;
     display: flex;
@@ -69,15 +83,19 @@ export default {
     .banner{
       flex:1;
       position: relative;
+      z-index: 1;
       img{
         width: 750px;
         height: 460px;
         margin-top: 200px;
+        // animation:eye 5s infinite linear;
       }
       span{
         display: block;
         position: absolute;
         font-size: 0;
+        animation:flash 5s infinite linear;
+        z-index: -1;
       }
       .rule{
         background: url('http://img5.168trucker.com/topic/images/worldCup/rule-btn.png') 50% 50% no-repeat;
@@ -125,4 +143,5 @@ export default {
       }
     }
   }
+
 </style>
