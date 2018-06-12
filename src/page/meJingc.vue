@@ -7,9 +7,9 @@
     </HeaderTop>
 
     <div class="main">
-      <ul>
+      <ul @scroll="scrollMore">
         <li v-for="(item ,index) in jingc" :key="index">
-          <img src="http://img5.168trucker.com/topic/images/worldCup/field1.png" class="title" alt="">
+          <h3 class="title">第一轮</h3>
           <div class="betting-box">
             <div class="header">
               投注方式：3串1
@@ -24,6 +24,8 @@
             </div>
           </div>
         </li>
+        <li class="loading" v-if="!end">正在加载中</li>
+        <li class="end" v-else>已经到底了</li>
       </ul>
     </div>
     <Rule v-show="showRuleStatus" @showRule="showRule"></Rule>
@@ -40,6 +42,10 @@ export default {
     return {
       showRuleStatus: false,
       showPriceRuleStatus: false,
+      // 加载中状态
+      loading: false,
+      // 是否到底了
+      end: false,
       jingc: [
         {
           total: 30,
@@ -111,12 +117,20 @@ export default {
     },
     tohome () {
       this.jump('/')
+    },
+    scrollMore (e) {
+      if (e.target.scrollTop + e.target.clientHeight > e.target.scrollHeight - 100 && !this.loading) {
+        console.log(123)
+      }
     }
   }
 }
 </script>
 
 <style scoped lang="less">
+.loading,.end{
+  margin-top: -30px;
+}
   .waaper{
     height: 100%;
     width: 100%;
@@ -142,12 +156,23 @@ export default {
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       height: 100%;
+      width: 630px;
     }
     li{
       display: flex;
       justify-content: center;
       flex-direction: column;
       align-items: center;
+      .title{
+        background: url('http://img5.168trucker.com/topic/images/worldCup/field.png') no-repeat;
+        width: 350px;
+        height: 88px;
+        text-align: center;
+        color: rgb(255, 249, 72);
+        text-shadow: 0px 1px 0px rgba(55, 115, 32, 0.75);
+        font-size: 48px;
+        line-height: 88px;
+      }
       .betting-box{
         margin: 24px auto 30px;
         background: url('http://img5.168trucker.com/topic/images/worldCup/card-bg.png') no-repeat;

@@ -18,14 +18,14 @@
             </div>
             <div class="team">
               <figure>
-                <img 
-                  src="http://img5.168trucker.com/topic/images/worldCup/win.png" 
+                <img
+                  src="http://img5.168trucker.com/topic/images/worldCup/win.png"
                   v-if="item.type=='胜'" alt="">
-                <img src="http://img5.168trucker.com/topic/images/worldCup/fail.png" 
+                <img src="http://img5.168trucker.com/topic/images/worldCup/fail.png"
                   v-if="item.type=='负'"
                   alt="">
-                <img 
-                  src="http://img5.168trucker.com/topic/images/worldCup/flat.png" 
+                <img
+                  src="http://img5.168trucker.com/topic/images/worldCup/flat.png"
                   v-if="item.type=='平'"
                   alt="">
               </figure>
@@ -58,7 +58,7 @@ export default {
     return {
       showRuleStatus: false,
       showPriceRuleStatus: false,
-      SubmitStatus: false,
+      SubmitStatus: false
       // betting: [
       //   {
       //     teamAImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
@@ -91,7 +91,7 @@ export default {
     SubmitOk
   },
   computed: {
-    betting () { return this.$store.state.selectObj },
+    betting () { return this.$store.state.selectObj }
   },
   created () {
   },
@@ -136,7 +136,7 @@ export default {
     align-items: center;
     padding: 35px 30px 0;
     box-sizing: border-box;
-    max-height: 1058px;
+    height: 1058px;
     .main{
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;

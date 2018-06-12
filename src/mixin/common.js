@@ -44,8 +44,8 @@ export default {
     },
     getQueryString (name) {
       /* eslint-disable */
-            return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ''])[1].replace(/\+/g, '%20')) || null
-                /* eslint-enable */
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ''])[1].replace(/\+/g, '%20')) || null
+       /* eslint-enable */
     },
     getWxconfig () {
       XHR.getWechat({

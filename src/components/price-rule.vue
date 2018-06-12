@@ -133,7 +133,7 @@ export default {
       }
     }
     .know{
-      margin:30px auto;
+      margin:30px auto 0;
       background: url('http://img5.168trucker.com/topic/images/worldCup/know.png') 50% 50%;
       background-size: cover;
       width: 320px;

@@ -2,19 +2,26 @@
 <form class="main">
   <img src="http://img5.168trucker.com/topic/images/worldCup/submit-title.png" class="title" alt="">
   <label for="" class="input">
-    <span class="des">姓名</span><input type="text" placeholder="请输入您的姓名">
+    <span class="des">姓名</span><input type="text" v-model="forms.name" placeholder="请输入您的姓名">
   </label>
   <label for="" class="input">
-    <span class="des">手  机  号</span><input type="text" placeholder="请输入您的姓名">
+    <span class="des">手  机  号</span><input type="text"  v-model="forms.phone" placeholder="请输入您的手机号">
   </label>
   <label for="" class="input">
-    <span class="des">所驾车型</span><input type="text" placeholder="请输入您的姓名">
+    <span class="des">所驾车型</span>
+    <div class="input-moni">
+      <span :class="[carText=='请选择目前所驾车型'?'placeholder':'select']">{{carText}}</span>
+      <select name="" id="" @change="changeCar" v-model="forms.cartype">
+        <option value="中重卡">中重卡</option>
+        <option value="轻微卡">轻微卡</option>
+      </select>
+    </div>
   </label>
   <div class="textarea">
     <span class="des">收货地址</span>
-    <textarea placeholder="请输入您的详细地址"></textarea>
+    <textarea placeholder="请输入您的详细地址"  v-model="forms.address"></textarea>
   </div>
-  <button type="submit" class="submit">提交</button>
+  <button type="submit" class="submit" @click.prevent="submit">提交</button>
 </form>
 </template>
 
@@ -22,10 +29,23 @@
 export default {
   data () {
     return {
-      msg: ''
+      carText: '请选择目前所驾车型',
+      forms: {
+        name: '',
+        phone: '',
+        cartype: '',
+        address: ''
+      }
     }
   },
   methods: {
+    submit () {
+      this.$emit('submit', this.forms)
+    },
+    changeCar (e) {
+      this.carText = e.target.value
+      console.log(e.target.value)
+    }
   }
 }
 </script>
@@ -55,6 +75,25 @@ export default {
       color: #fff;
       display: inline-block;
       width: 125px;
+    }
+    .input-moni{
+      flex: 1;
+      position: relative;
+      .placeholder{
+        font-size: 30px;
+        color: rgba(255,255, 255, 0.6)
+      }
+      .select{
+        font-size: 30px;
+      }
+      select{
+        position: absolute;
+        left: 0;
+        top:0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+      }
     }
     input,textarea{
       border: none;

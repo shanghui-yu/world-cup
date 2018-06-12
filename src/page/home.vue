@@ -3,11 +3,11 @@
     <img src="http://img5.168trucker.com/topic/images/worldCup/login.png" alt="" class="log">
     <div class="banner">
       <img  :class="[beginAnimation?'bounceInDown animated':'swing animated']" src="http://img5.168trucker.com/topic/images/worldCup/banner.png" :style="{marginTop:mtop}" alt="">
-      <span class="rule" @click="showRule" :style="{top:top}">活动规则</span>
-      <span class="price" @click="showPriceRule" :style="{top:top}">奖项设置</span>
+      <span :class="['rule',showBtn?'show':'']" @click="showRule" :style="{top:top}">活动规则</span>
+      <span :class="['price',showBtn?'show':'']" @click="showPriceRule" :style="{top:top}">奖项设置</span>
     </div>
 
-    <footer>
+    <footer :class="[showBtn?'show':'']">
       <a href="#/Rank" class="rank-btn">排行榜</a>
       <a href="#/Betting" class="to-join">立即加入</a>
       <a href="#/MeJingc" class="my-action">我的竞猜</a>
@@ -23,10 +23,11 @@ import priceRule from '../components/price-rule.vue'
 export default {
   data () {
     return {
-      mtop:'200px',
-      top:'530px',
-      beginAnimation:false,
+      mtop: '200px',
+      top: '530px',
+      beginAnimation: false,
       showRuleStatus: false,
+      showBtn: false,
       showPriceRuleStatus: false
     }
   },
@@ -35,20 +36,19 @@ export default {
     priceRule
   },
   created () {
-    // setTimeout(() => {
-    //   this.jump('/BettingOk')
-    // }, 300)
-    if(window.innerHeight<1182){
-     this.mtop ='115px'
-     this.top='445px'
-      
+    if (window.innerHeight < 1182) {
+      this.mtop = '115px'
+      this.top = '445px'
     }
     setTimeout(() => {
-      this.beginAnimation =true
+      this.beginAnimation = true
       setTimeout(() => {
-        this.beginAnimation =false
-      }, 500);
-    }, 200);
+        this.beginAnimation = false
+        setTimeout(() => {
+          this.showBtn = true
+        }, 1e3)
+      }, 500)
+    }, 200)
   },
   mounted () {
 
@@ -94,8 +94,7 @@ export default {
         display: block;
         position: absolute;
         font-size: 0;
-        animation:flash 5s infinite linear;
-        z-index: -1;
+        // animation:flash 1s linear;
       }
       .rule{
         background: url('http://img5.168trucker.com/topic/images/worldCup/rule-btn.png') 50% 50% no-repeat;
@@ -104,6 +103,12 @@ export default {
         height: 143px;
         left: 30px;
         top:530px;
+        transform: translate3d(-120%,0,0);
+        transition: all 0.5s ease;
+        z-index: -1;
+        &.show{
+          transform: translate3d(0,0,0);
+        }
       }
       .price{
         background: url('http://img5.168trucker.com/topic/images/worldCup/price-set.png') 50% 50% no-repeat;
@@ -112,12 +117,22 @@ export default {
         height: 141px;
         top:530px;
         right: 30px;
+        transform: translate3d(120%,0,0);
+        transition: all 0.5s ease;
+        &.show{
+          transform: translate3d(0,0,0);
+        }
       }
     }
     footer{
       height: 150px;
       font-size: 0;
       width: 100%;
+      transform: translate3d(0,100%,0);
+      transition: all 0.5s ease;
+      &.show{
+        transform: translate3d(0,0,0);
+      }
       a{
         display: inline-block;
       }

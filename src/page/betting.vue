@@ -10,7 +10,7 @@
       <div class="table">
           <div class="card" @click="showResult(item,ind)" v-for="(item ,ind) in cards.imgs" :key="ind">
             <!-- 默认卡牌 -->
-            <figure class="defalt"><img :src="item" alt=""></figure>
+            <figure class="defalt"><img :src="item.url" alt=""></figure>
             <div class="result" :total="items.type" v-for="items in result" v-if="items.index == ind" :key="items.id">
               <figure><img :src="items.team_A_logo" alt=""></figure>
             </div>
@@ -19,8 +19,8 @@
       </div>
     </header>
     <!-- 翻牌结果 -->
-    <Guessing 
-      v-if="showResultStatus" 
+    <Guessing
+      v-if="showResultStatus"
       :selectObj = "selectimg"
       :matchList="cards.matchList"
       @showResult="showResult"
@@ -34,8 +34,10 @@
 
 <script>
 import Rule from '../components/rule'
+import storage from '../store/storage.js'
 import priceRule from '../components/price-rule.vue'
 import Guessing from '../components/guessing.vue'
+import XHR from '../api'
 export default {
   data () {
     return {
@@ -44,56 +46,10 @@ export default {
       showPriceRuleStatus: false,
       // 当前选择品牌
       selectimg: {},
-      selectIndex:null,
+      selectIndex: null,
       // 翻牌状态
-      bettingStatus:0,
-      cards: {
-        'imgs': [
-          'http://img5.168trucker.com/worldcup/1/1-1/1.png!600',
-          'http://img5.168trucker.com/worldcup/1/1-1/1.png!600',
-          'http://img5.168trucker.com/worldcup/1/1-1/1.png!600',
-          'http://img5.168trucker.com/worldcup/1/1-1/1.png!600',
-          'http://img5.168trucker.com/worldcup/1/1-1/1.png!600',
-          'http://img5.168trucker.com/worldcup/1/1-1/1.png!600',
-          'http://img5.168trucker.com/worldcup/1/1-1/1.png!600',
-          'http://img5.168trucker.com/worldcup/1/1-1/1.png!600'
-        ],
-        'matchList': [
-          {
-            'team_A_name': '俄罗斯',
-            'team_A_logo': 'https://img.dongqiudi.com/data/pic/1878.png',
-            'team_B_name': '沙特阿拉伯',
-            'team_B_logo': 'https://img.dongqiudi.com/data/pic/1897.png',
-            'sort_timestamp': 1528959600000,
-            'fs_A': null,
-            'fs_B': null,
-            'date_utc': '2018-06-14',
-            'round_name': '小组赛'
-          },
-          {
-            'team_A_name': '埃及',
-            'team_A_logo': 'https://img.dongqiudi.com/data/pic/658.png',
-            'team_B_name': '乌拉圭',
-            'team_B_logo': 'https://img.dongqiudi.com/data/pic/2300.png',
-            'sort_timestamp': 1529035200000,
-            'fs_A': null,
-            'fs_B': null,
-            'date_utc': '2018-06-15',
-            'round_name': '小组赛'
-          },
-          {
-            'team_A_name': '摩洛哥',
-            'team_A_logo': 'https://img.dongqiudi.com/data/pic/1509.png',
-            'team_B_name': '伊朗',
-            'team_B_logo': 'https://img.dongqiudi.com/data/pic/1178.png',
-            'sort_timestamp': 1529046000000,
-            'fs_A': null,
-            'fs_B': null,
-            'date_utc': '2018-06-15',
-            'round_name': '小组赛'
-          }
-        ]
-      }
+      bettingStatus: 0,
+      cards: {}
     }
   },
   components: {
@@ -102,9 +58,10 @@ export default {
     Guessing
   },
   computed: {
-    result () { return this.$store.state.selectObj },
+    result () { return this.$store.state.selectObj }
   },
   created () {
+    this.getMatch()
   },
   mounted () {
 
@@ -119,38 +76,60 @@ export default {
     tohome () {
       this.jump('/')
     },
+    checkIsperiods () {
+      let periods = storage.get('periods')
+      if (!periods || (periods && periods.round !== this.cards.round)) {
+        storage.set('periods', this.cards)
+      }
+    },
+    getMatch () {
+      XHR.getJingCai().then(res => {
+        let {status, data, message} = res.data
+        if (!status) {
+          this.cards = data
+          this.checkIsperiods()
+        } else {
+          alert(message)
+        }
+      })
+    },
     // 显示奖项
     /*
       如果没有点击过翻牌 bettingStatus为false代表洗牌第一次点击把洗牌更改为确定
       翻牌以后设置当前选择的图片
     */
-    showResult (img,index) {
-      if(this.result.length>2){
-        alert('没人每轮只能选择三次')
+    showResult (item, index) {
+      let periods = storage.get('periods')
+      if (periods && periods.round === this.cards.round) {
+        alert('每人每轮只能提交一次')
+        return
+      }
+      if (this.result.length > 2) {
+        alert('每人每轮只能选择三次')
         return
       }
       this.showResultStatus = !this.showResultStatus
-      if(img){
-        this.selectimg = img
+      if (item) {
+        this.selectimg = item
       }
-      if(index){
+      if (index) {
         this.selectIndex = index
       }
     },
 
     // 洗牌或提交
-    again(){
-      if(!this.bettingStatus){
-        console.log('洗牌');
-      }else{
-        console.log('提交');
+    again () {
+      if (!this.bettingStatus) {
+        console.log('洗牌')
+      } else {
+        console.log('提交')
         this.jump('/BettingOk')
       }
     },
-    select(json){
-      json.index= this.selectIndex
+    select (json) {
+      json.index = this.selectIndex
       this.$store.dispatch('selectObjFun', json)
-      if(!this.bettingStatus){
+      if (!this.bettingStatus) {
         this.bettingStatus = 1
       }
     }

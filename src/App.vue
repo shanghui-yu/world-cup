@@ -5,8 +5,42 @@
 </template>
 
 <script>
+import XHR from './api'
 export default {
-  name: 'App'
+  name: 'App',
+  created () {
+    this.getUserinfo()
+  },
+  methods: {
+    getUserinfo () {
+      let href = location.href
+      console.log(href, 1)
+      if (!localStorage.getItem('userInfoWorldCup')) {
+        if (href.indexOf('openid') > -1) {
+          let json = {}
+          json['uid'] = this.getQueryString('openid')
+          json['nickname'] = this.getQueryString('nickname')
+          json['headimgurl'] = this.getQueryString('headimgurl')
+          localStorage.setItem('userInfo', JSON.stringify(json))
+          this.getUser(json['uid'])
+        } else {
+          location.href = 'http://topic.kacheyizu.cn/auth'
+        }
+      }
+    },
+    getUser (uid) {
+      let json = {
+        uid: `${uid}`
+      }
+      XHR.getUser(json).then((res) => {
+        let {data, status} = res.data
+        if (!status) {
+          console.log(data, 123)
+          localStorage.setItem('userInfoWorldCup', JSON.stringify(data))
+        }
+      })
+    }
+  }
 }
 </script>
 

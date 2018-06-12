@@ -12,12 +12,14 @@
         <span>昵称</span>
         <span>积分</span>
       </div>
-      <ul class="rank-box">
-        <li v-for="(item,index) in ranks" :key="index">
+      <ul class="rank-box" @scroll="scrollMore">
+        <li v-for="(item,index) in list" :key="index">
           <span class="one">{{index+1}}</span>
           <span>{{item.name}}</span>
           <span>{{item.total}}</span>
         </li>
+        <li class="loading" v-if="!end">正在加载中</li>
+        <li class="end" v-else>已经到底了</li>
       </ul>
       <div class="me-rank">
         <span>123</span>
@@ -31,6 +33,7 @@
 </template>
 
 <script>
+import XHR from '../api'
 import HeaderTop from '../components/header-top.vue'
 import Rule from '../components/rule'
 import priceRule from '../components/price-rule.vue'
@@ -39,7 +42,10 @@ export default {
     return {
       showRuleStatus: false,
       showPriceRuleStatus: false,
-      ranks: [
+      loading: false,
+      // 是否到底了
+      end: false,
+      list: [
         {
           total: 100,
           name: '李大嘴'
@@ -73,7 +79,7 @@ export default {
     priceRule
   },
   created () {
-    this.ranks = [...this.ranks, ...this.ranks, ...this.ranks]
+    this.getRank()
   },
   mounted () {
 
@@ -87,6 +93,33 @@ export default {
     },
     tohome () {
       this.jump('/')
+    },
+    getRank () {
+      if (this.loading) {
+        return
+      }
+      this.loading = 1
+      let json = {
+        page: 0,
+        size: 20
+      }
+      XHR.getRank(json).then(res => {
+        let {data, status} = res.data
+        if (!status) {
+          this.list = [...this.list, ...data]
+          if (data.length === 0) {
+            this.end = true
+          } else {
+            this.loading = 0
+            this.page++
+          }
+        }
+      })
+    },
+    scrollMore (e) {
+      if (e.target.scrollTop + e.target.clientHeight > e.target.scrollHeight - 80 && !this.loading) {
+        this.getRank()
+      }
     }
   }
 }
@@ -197,4 +230,5 @@ export default {
       }
     }
   }
+
 </style>

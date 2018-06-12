@@ -4,11 +4,11 @@
    <div class="close"  @click="showResult"></div>
    <div class="main">
      <figure>
-      <img :src="selectObj" alt="" :class="['fileinY',flipInY?'hide':'',showPrice?'none':'']">
+      <img :src="selectObj.url" alt="" :class="['fileinY',flipInY?'hide':'',showPrice?'none':'']">
       <img :src="resultTeam.team_A_logo" alt="" :class="['resultImg',showPrice?'show':'']">
     </figure>
      <span class="name">{{resultTeam.team_A_name}}</span>
-     <span class="des">世界杯口号世界杯口号世界杯口号世界杯口号。</span>
+     <span class="des">{{selectObj.desc}}</span>
    </div>
    <div class="footer">
      <p class="tip">请选择您的竞猜胜负</p>
@@ -30,43 +30,44 @@
 
 <script>
 export default {
-  props:['selectObj','matchList'],
+  props: ['selectObj', 'matchList'],
   data () {
     return {
       msg: '',
-      defalts:'100',
+      defalts: '100',
       // 翻牌
-      flipInY:0,
+      flipInY: 0,
       // 显示结果
-      showPrice:0,
-      resultTeam:{}
+      showPrice: 0,
+      resultTeam: {},
+      selectIndex: null
     }
   },
-  created(){
-    
+  created () {
+
   },
-  mounted(){
+  mounted () {
     setTimeout(() => {
       this.flipInY = 1
       this.getMathPrice()
       setTimeout(() => {
         this.showPrice = 1
-      }, 500);
-    }, 500);
+      }, 500)
+    }, 500)
   },
   methods: {
     showResult () {
       this.$emit('showResult')
     },
-    select(e){
+    select (e) {
+      this.matchList.splice(this.selectIndex, 1)
       this.showResult()
       this.resultTeam.type = e
-      this.$emit('select',this.resultTeam)
+      this.$emit('select', this.resultTeam)
     },
-    getMathPrice(){
-      let n = Math.floor(Math.random() * this.matchList.length + 1)-1;  
-      this.resultTeam = this.matchList[n]
-      this.matchList.splice(n,1)
+    getMathPrice () {
+      this.selectIndex = Math.floor(Math.random() * this.matchList.length + 1) - 1
+      this.resultTeam = this.matchList[this.selectIndex]
     }
   }
 }

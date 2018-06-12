@@ -6,7 +6,7 @@
       @showPriceRule="showPriceRule">
     </HeaderTop>
     <div class="main-bg">
-      <FileIn ></FileIn>
+      <FileIn @submit="submit"></FileIn>
     </div>
     <Rule v-show="showRuleStatus" @showRule="showRule"></Rule>
     <priceRule v-show="showPriceRuleStatus" @showPriceRule="showPriceRule"></priceRule>
@@ -49,6 +49,9 @@ export default {
     },
     tohome () {
       this.jump('/')
+    },
+    submit (json) {
+      console.log(json)
     }
   }
 }
