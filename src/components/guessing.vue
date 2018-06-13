@@ -1,7 +1,7 @@
 <template>
 <transition name="fade">
   <div class="pop">
-   <div class="close"  @click="showResult"></div>
+   <div class="close"  @click="showResult(1)"></div>
    <div class="main">
      <figure>
       <img :src="`${selectObj.url}!300`" alt="" :class="['fileinY',flipInY?'hide':'',showPrice?'none':'']">
@@ -10,20 +10,20 @@
     <!-- title -->
      <span class="name" v-if="!showPrice">{{selectObj.factory}}</span>
      <span class="name" v-else>{{randomTeam>0.5?resultTeam.team_A_name:resultTeam.team_B_name}}</span>
-    
+
      <span class="des">{{selectObj.desc}}</span>
    </div>
    <div :class="['footer',showPrice?'show':'']">
      <p class="tip">请选择您的竞猜胜负</p>
      <div class="betting">
        <div class="win" @click="select('胜')">
-         <figure><img src="http://img5.168trucker.com/topic/images/worldCup/win.png" alt=""></figure>
+         <figure><img src="https://img5.168trucker.com/topic/images/worldCup/win.png" alt=""></figure>
        </div>
        <div class="flat" @click="select('平')">
-         <figure><img src="http://img5.168trucker.com/topic/images/worldCup/flat.png" alt=""></figure>
+         <figure><img src="https://img5.168trucker.com/topic/images/worldCup/flat.png" alt=""></figure>
       </div>
        <div class="fail" @click="select('负')">
-         <figure><img src="http://img5.168trucker.com/topic/images/worldCup/fail.png" alt=""></figure>
+         <figure><img src="https://img5.168trucker.com/topic/images/worldCup/fail.png" alt=""></figure>
       </div>
      </div>
    </div>
@@ -42,14 +42,15 @@ export default {
       showPrice: 0,
       resultTeam: {},
       selectIndex: null,
-      randomTeam:0
+      randomTeam: 0
     }
   },
   computed: {
     indexs () { return this.$store.state.indexs }
   },
   created () {
-    this.randomTeam = Math.random();
+    this.randomTeam = Math.random()
+    console.log(this.indexs, 666)
   },
   mounted () {
     // 随机获取球队
@@ -62,29 +63,30 @@ export default {
     }, 1500)
   },
   methods: {
-    showResult () {
-      this.$emit('showResult')
+    showResult (val) {
+      this.$emit('showResult', '取消')
     },
     select (e) {
       this.showResult()
-      //设置主场球队状态 
+      // 设置主场球队状态
       let mactchRes = null
       switch (e) {
         case '胜':
-          mactchRes = this.randomTeam>0.5?1:-1
-          break;
+          mactchRes = this.randomTeam > 0.5 ? 1 : -1
+          break
         case '平':
           mactchRes = 0
-          break;
+          break
         case '负':
-          mactchRes = this.randomTeam>0.5?-1:1
-          break;
+          mactchRes = this.randomTeam > 0.5 ? -1 : 1
+          break
       }
       let json = {
-        index:this.selectIndex,
-          val:mactchRes
+        index: this.selectIndex,
+        val: mactchRes
       }
-      this.$store.dispatch('setMatchRes',json)
+      this.$store.dispatch('setSelectIndex', this.selectIndex)
+      this.$store.dispatch('setMatchRes', json)
       this.resultTeam.type = e
       this.resultTeam.randomTeam = this.randomTeam
       this.$emit('select', this.resultTeam)
@@ -92,16 +94,14 @@ export default {
     getMathPrice () {
       let times = setTimeout(() => {
         let n = Math.floor(Math.random() * this.matchList.length + 1) - 1
-        if(this.indexs.indexOf(n)<0){
+        if (this.indexs.indexOf(n) < 0) {
           this.selectIndex = n
-          this.$store.dispatch('setSelectIndex', n)
           this.resultTeam = this.matchList[this.selectIndex]
           times && clearTimeout(times)
-        }else{
+        } else {
           this.getMathPrice()
         }
       }, 100)
-      
     }
   }
 }
@@ -143,7 +143,7 @@ export default {
   .main{
     width: 611px;
     height: 612px;
-    background: url('http://img5.168trucker.com/topic/images/worldCup/model-main.png') no-repeat;
+    background: url('https://img5.168trucker.com/topic/images/worldCup/model-main.png') no-repeat;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -189,10 +189,11 @@ export default {
       margin-bottom: 7px;
     }
     .des{
-      font-size: 30px;
+      font-size: 28px;
       line-height: 36px;
       width: 330px;
       margin:0 auto;
+      color: #fff948;
     }
   }
   .footer{

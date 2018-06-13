@@ -9,21 +9,24 @@
     <div class="main">
       <ul>
         <li v-for="(item ,index) in jingc" :key="index">
-          <h3 class="title">第一轮</h3>
+          <h3 class="title">第{{item.day}}轮</h3>
           <div class="betting-box">
             <div class="header">
-              投注方式：3串1
-              <div class="result">开奖结果：{{item.total}}</div>
+              投注方式：{{item.number.length}}串1
+              <div class="result">开奖结果：{{item.score}}</div>
             </div>
             <div class="footer">
-              <div :class="item.result" v-for="(item,index) in item.team" :key="index">
+              <div
+                :class="[ele=='0'?'fail':'',ele=='1'?'win':'',ele=='-1'?'flat':'']"
+                v-if="ele" v-for="(ele,inx) in item.matchRes" :key="inx">
                 <figure>
-                  <img :src="item.teamImg" alt="">
+                  <img :src="item.matchList[inx].team_A_logo" alt="">
                 </figure>
               </div>
             </div>
           </div>
         </li>
+        <li class="data-null" v-if="!jingc.length">暂无竞猜 </li>
       </ul>
     </div>
     <Rule v-show="showRuleStatus" @showRule="showRule"></Rule>
@@ -35,62 +38,17 @@
 import HeaderTop from '../components/header-top.vue'
 import Rule from '../components/rule'
 import priceRule from '../components/price-rule.vue'
-import XHR from "../api";
+import storage from '../store/storage.js'
+import XHR from '../api'
 export default {
   data () {
     return {
       showRuleStatus: false,
       showPriceRuleStatus: false,
-      uid:'xiaohuids', // 用户openid
-      jingc: [
-        {
-          total: 30,
-          team: [
-            {
-              teamImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
-              result: 'win'
-            },
-            {
-              teamImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
-              result: 'fail'
-            },
-            {
-              teamImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
-              result: 'flat'
-            }
-          ]
-        },
-        {
-          total: 30,
-          team: [
-            {
-              teamImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
-              result: 'flat'
-            },
-            {
-              teamImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
-              result: 'fail'
-            },
-            {
-              teamImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
-              result: 'fail'
-            }
-          ]
-        },
-        {
-          total: 30,
-          team: [
-            {
-              teamImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
-              result: 'fail'
-            },
-            {
-              teamImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
-              result: 'win'
-            }
-          ]
-        }
-      ]
+      uid: 'xiaohuids', // 用户openid
+      jingc: [],
+      rounds: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二', '十三', '十四', '十五', '十六', '十七'],
+      teams: []
     }
   },
   components: {
@@ -99,24 +57,41 @@ export default {
     priceRule
   },
   created () {
-    // this.uid = this.getUid()
+    this.uid = this.getUid()
     this.getWxconfig()
     this.hideshare()
     this.getMyJingCai()
+    if (storage.get('teams')) {
+      this.teams = JSON.parse(storage.get('teams'))
+    }
   },
   mounted () {
-
   },
   methods: {
     // 获取我的竞猜信息
-    getMyJingCai(){
+    getMyJingCai () {
       let json = {
-        uid:this.uid
+        uid: this.uid
       }
-      XHR.getMyJingCai(json).then(res=>{
-        let {status,data} = res.data
-        console.log(data)
+      XHR.getMyJingCai(json).then(res => {
+        let {status, data} = res.data
+        if (!status && data) {
+          // this.jingc = data.group
+          this.jingc = this.picing(data.group)
+          console.log(this.jingc)
+        }
       })
+    },
+    picing (data) {
+      if (data && data.length) {
+        data.forEach((element, index) => {
+          element.day = this.rounds[element.round - 1]
+          element.number = element.matchRes.filter((item) => {
+            return item
+          })
+        })
+      }
+      return data
     },
     showRule () {
       this.showRuleStatus = !this.showRuleStatus
@@ -135,11 +110,19 @@ export default {
 .loading,.end{
   margin-top: -30px;
 }
+.data-null{
+      height: 400px !important;
+      background: inherit !important;
+      color: #fff;
+      justify-content: center;
+      align-items: center;
+      font-size: 36px;
+    }
   .waaper{
     height: 100%;
     width: 100%;
    overflow: hidden;
-    background: url('http://img5.168trucker.com/topic/images/worldCup/bg-two.jpg') 50% 50% no-repeat;
+    background: url('https://img5.168trucker.com/topic/images/worldCup/bg-two.jpg') 50% 50% no-repeat;
     background-size: cover;
     position: relative;
     display: flex;
@@ -149,8 +132,8 @@ export default {
     margin:0 auto;
     position: relative;
     width: 690px;
-    background: url('http://img5.168trucker.com/topic/images/worldCup/model-bg.png') no-repeat;
-    max-height: 1058px;
+    background: url('https://img5.168trucker.com/topic/images/worldCup/model-bg.png') no-repeat;
+    height: 1058px;
     padding-top: 60px;
     box-sizing: border-box;
      display: flex;
@@ -168,7 +151,7 @@ export default {
       flex-direction: column;
       align-items: center;
       .title{
-        background: url('http://img5.168trucker.com/topic/images/worldCup/field.png') no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/field.png') no-repeat;
         width: 350px;
         height: 88px;
         text-align: center;
@@ -179,7 +162,7 @@ export default {
       }
       .betting-box{
         margin: 24px auto 30px;
-        background: url('http://img5.168trucker.com/topic/images/worldCup/card-bg.png') no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/card-bg.png') no-repeat;
         width: 572px;
         height: 230px;
         display: flex;
@@ -238,15 +221,15 @@ export default {
               display: block;
             }
             &.win::after{
-              background: url('http://img5.168trucker.com/topic/images/worldCup/win.png') 50% 50% no-repeat;
+              background: url('https://img5.168trucker.com/topic/images/worldCup/win.png') 50% 50% no-repeat;
               background-size: cover;
             }
             &.fail::after{
-              background: url('http://img5.168trucker.com/topic/images/worldCup/fail.png') 50% 50% no-repeat;
+              background: url('https://img5.168trucker.com/topic/images/worldCup/fail.png') 50% 50% no-repeat;
               background-size: cover;
             }
             &.flat::after{
-              background: url('http://img5.168trucker.com/topic/images/worldCup/flat.png') 50% 50% no-repeat;
+              background: url('https://img5.168trucker.com/topic/images/worldCup/flat.png') 50% 50% no-repeat;
               background-size: cover;
             }
           }

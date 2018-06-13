@@ -1,6 +1,6 @@
 <template>
 <form class="main">
-  <img src="http://img5.168trucker.com/topic/images/worldCup/submit-title.png" class="title" alt="">
+  <img src="https://img5.168trucker.com/topic/images/worldCup/submit-title.png" class="title" alt="">
   <label for="" class="input">
     <span class="des">姓名</span><input type="text" v-model="forms.name" placeholder="请输入您的姓名">
   </label>
@@ -27,6 +27,7 @@
 
 <script>
 export default {
+  props: ['userinfo'],
   data () {
     return {
       carText: '请选择目前所驾车型',
@@ -43,6 +44,7 @@ export default {
       this.$emit('submit', this.forms)
     },
     changeCar (e) {
+      ga('send', 'event', '所驾车型', e.target.value, this.userinfo.nickname)
       this.carText = e.target.value
     }
   }
@@ -61,7 +63,7 @@ export default {
     margin:24px auto;
   }
   .input,.textarea{
-    background: url('http://img5.168trucker.com/topic/images/worldCup/input.png') no-repeat;
+    background: url('https://img5.168trucker.com/topic/images/worldCup/input.png') no-repeat;
     width: 570px;
     height: 107px;
     line-height: 107px;
@@ -107,7 +109,7 @@ export default {
     }
   }
   .textarea{
-    background: url('http://img5.168trucker.com/topic/images/worldCup/textarea.png') no-repeat;
+    background: url('https://img5.168trucker.com/topic/images/worldCup/textarea.png') no-repeat;
     width: 570px;
     height: 207px;
     textarea{
@@ -116,7 +118,7 @@ export default {
   }
   .submit{
       margin: 20px auto 34px;
-      background: url('http://img5.168trucker.com/topic/images/worldCup/submit.png') no-repeat;
+      background: url('https://img5.168trucker.com/topic/images/worldCup/submit.png') no-repeat;
       width: 320px;
       height: 96px;
       font-size: 0;

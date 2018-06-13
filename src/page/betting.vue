@@ -1,7 +1,7 @@
 <template>
   <div class="waaper">
     <header>
-      <img src="http://img5.168trucker.com/topic/images/worldCup/banner1.png" alt="">
+      <img src="https://img5.168trucker.com/topic/images/worldCup/banner1.png" alt="">
       <div class="footer">
         <span class="rule" @click="showRule">活动规则</span>
         <span class="home" @click="tohome">会主页</span>
@@ -38,22 +38,25 @@ import storage from '../store/storage.js'
 import priceRule from '../components/price-rule.vue'
 import Guessing from '../components/guessing.vue'
 import XHR from '../api'
-import toast from "../components/toast"
+import toast from '../components/toast'
 export default {
   data () {
     return {
       showResultStatus: false,
       showRuleStatus: false,
       showPriceRuleStatus: false,
-      uid:'xiaohuids', // 用户openid
+      toastMsg: '',
+      toastState: false,
+      uid: 'ceshiceshi', // 用户openid
       // 当前选择品牌
       selectimg: {},
       // 选中当前车系标志
       selectIndex: null,
       // 选中所有的车系品牌下标
-      selectIndexs:[],
+      selectIndexs: [],
       // 翻牌状态
       bettingStatus: 0,
+      clickNum: 0,
       cards: {}
     }
   },
@@ -76,7 +79,10 @@ export default {
     // 清空状态管理
     this.$store.dispatch('initState')
 
-    // this.uid = this.getUid()
+    let userinfo = storage.get('userInfoWorldCup')
+    if (userinfo) {
+      this.userinfo = JSON.parse(userinfo)
+    }
   },
   mounted () {
 
@@ -91,15 +97,36 @@ export default {
     tohome () {
       this.jump('/')
     },
-    
+    showToast (msg) {
+      if (this.toastState) return
+      this.toastMsg = msg
+      this.toastState = true
+      setTimeout(() => {
+        this.toastState = false
+      }, 2e3)
+    },
     // 获取竞猜数据
     getMatch () {
       XHR.getJingCai().then(res => {
         let {status, data, message} = res.data
         if (!status) {
           this.cards = data
+          let teams = storage.get('teams')
+          if (teams) {
+            teams = JSON.parse(teams)
+            teams.forEach(element => {
+              if (element.round !== data.round) {
+                teams.push(data)
+                storage.set('teams', teams)
+              }
+            })
+          } else {
+            let team = []
+            team.push(data)
+            storage.set('teams', team)
+          }
         } else {
-          alert(message)
+          this.showToast(message)
         }
       })
     },
@@ -109,21 +136,32 @@ export default {
       翻牌以后设置当前选择的图片
     */
     showResult (item, index) {
+      if (item === '取消') {
+        this.showResultStatus = !this.showResultStatus
+        let index = this.selectIndexs.indexOf(this.selectIndex)
+        this.selectIndexs.splice(index, 1)
+        return
+      }
       let periods = JSON.parse(storage.get('periods'))
       if (periods && periods === this.cards.round) {
-        alert('每人每轮只能提交一次')
+        this.showToast('每人每轮只能提交一次')
         return
       }
       if (this.result.length > 2) {
-        alert('每人每轮只能选择三次')
+        this.showToast('每人每轮只能选择三次')
         return
       }
       if (index) {
-        if(this.selectIndexs.indexOf(index)>-1){
+        if (this.selectIndexs.indexOf(index) > -1) {
           return
         }
         this.selectIndex = index
         this.selectIndexs.push(index)
+        if (!this.clickNum) {
+          this.clickNum = 1
+        } else {
+          this.clickNum++
+        }
       }
       this.showResultStatus = !this.showResultStatus
       if (item) {
@@ -134,12 +172,14 @@ export default {
     // 洗牌或提交
     again () {
       if (!this.bettingStatus) {
+        ga('send', 'event', '点击洗牌', '世界杯活动', this.userinfo.nickname)
         this.getMatch()
       } else {
-        this.jump(`/BettingOk/${this.uid}/${this.cards.type}/${this.cards.round}`)
+        ga('send', 'event', '点击确定', `用户点击了${this.clickNum}次九宫格`, this.userinfo.nickname)
+        this.jump(`/BettingOk/${this.userinfo.uid}/${this.cards.type}/${this.cards.round}`)
       }
     },
-    select (json,type) {
+    select (json, type) {
       // 设置翻牌的下标
       json.index = this.selectIndex
       this.$store.dispatch('selectObjFun', json)
@@ -157,7 +197,7 @@ export default {
     width: 100%;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    background: url('http://img5.168trucker.com/topic/images/worldCup/bg-three.jpg') 50% 50% no-repeat;
+    background: url('https://img5.168trucker.com/topic/images/worldCup/bg-three.jpg') 50% 50% no-repeat;
     background-size: cover;
     position: relative;
     display: flex;
@@ -175,21 +215,21 @@ export default {
         font-size: 0;
       }
       .rule{
-        background: url('http://img5.168trucker.com/topic/images/worldCup/rule-btn.png') 50% 50% no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/rule-btn.png') 50% 50% no-repeat;
         background-size: cover;
         width: 251px;
         height: 143px;
         margin-left: 20px;
       }
       .home{
-        background: url('http://img5.168trucker.com/topic/images/worldCup/back-home.png') 50% 50% no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/back-home.png') 50% 50% no-repeat;
         background-size: cover;
         width: 198px;
         height: 131px;
         margin-top: 18px;
       }
       .price-btn{
-        background: url('http://img5.168trucker.com/topic/images/worldCup/price-set.png') 50% 50% no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/price-set.png') 50% 50% no-repeat;
         background-size: cover;
         width: 249px;
         height: 141px;
@@ -199,7 +239,7 @@ export default {
     .table{
       width: 696px;
       height: 696px;
-      background: url('http://img5.168trucker.com/topic/images/worldCup/table.png') no-repeat;
+      background: url('https://img5.168trucker.com/topic/images/worldCup/table.png') no-repeat;
       margin: 25px auto 0;
       padding: 45px;
       box-sizing: border-box;
@@ -207,7 +247,7 @@ export default {
       .card{
         width: 201px;
         height: 201px;
-        background: url('http://img5.168trucker.com/topic/images/worldCup/card-card.png') no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/card-card.png') no-repeat;
         float: left;
         position: relative;
         &:nth-child(4){
@@ -235,7 +275,7 @@ export default {
           top:0;
           width: 100%;
           height: 100%;
-          background: url('http://img5.168trucker.com/topic/images/worldCup/turn-bg.png') no-repeat;
+          background: url('https://img5.168trucker.com/topic/images/worldCup/turn-bg.png') no-repeat;
           figure{
             width: 96px;
             height: 96px;
@@ -270,10 +310,10 @@ export default {
         top:246px;
         width: 201px;
         height: 201px;
-        background: url('http://img5.168trucker.com/topic/images/worldCup/again.png') no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/again.png') no-repeat;
       }
       .submit{
-        background: url('http://img5.168trucker.com/topic/images/worldCup/ok.png') no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/ok.png') no-repeat;
       }
     }
   }

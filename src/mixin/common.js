@@ -48,11 +48,11 @@ export default {
         return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ''])[1].replace(/\+/g, '%20')) || null
        /* eslint-enable */
     },
-    getUid(){
+    getUid () {
       let userinfo = storage.get('userInfoWorldCup')
       if (userinfo) {
         return JSON.parse(userinfo).uid
-      }else{
+      } else {
         return ''
       }
     },
@@ -76,13 +76,14 @@ export default {
     // 添加积分
     addIntegral (uid, integral) {
       let json = {
-        batch: window.batch,
         uid,
-        project: 'king_of_answer',
         integral
       }
       XHR.addIntegral(json).then((res) => {
-        console.log(res.data)
+        let {status} = res.data
+        if (!status) {
+          this.setCookie('worldShare', 'isok')
+        }
       })
     },
     hideshare () {
@@ -94,9 +95,8 @@ export default {
       })
     },
     share () {
-      let user = localStorage.getItem('userInfo')
+      let user = localStorage.getItem('userInfoWorldCup')
       user = JSON.parse(user)
-      let time = new Date().toLocaleDateString()
       wx.ready(() => {
         wx.showAllNonBaseMenuItem()
         wx.hideMenuItems({
@@ -105,14 +105,14 @@ export default {
         // 分享到朋友圈
         wx.onMenuShareTimeline({
           title: '卡车世界杯竞猜赢大奖',
-          link: window.location.href,
+          link: 'https://topic.vr0101.com/worldCup/index.html',
           imgUrl: 'https://img5.168trucker.com/topic/images/worldCup/share.png',
           success: (res) => {
-            let qaShare = this.getCookie('qaShare')
+            let qaShare = this.getCookie('worldShare')
             if (!qaShare) {
               this.addIntegral(user.uid, 1)
-              this.setCookie('qaShare', 'isok')
             }
+            ga('send', 'event', '用户分享', '朋友圈', '世界杯活动')
           },
           cancel: (res) => {
             // 用户取消分享后执行的回调函数
@@ -122,14 +122,14 @@ export default {
         wx.onMenuShareAppMessage({
           title: '卡车世界杯竞猜赢大奖',
           desc: '卡车世界杯，全国卡友都参加，电视、手机、车载蓝牙、车模奖品多多，参与就有礼！',
-          link: window.location.href,
+          link: 'https://topic.vr0101.com/worldCup/index.html',
           imgUrl: 'https://img5.168trucker.com/topic/images/worldCup/share.png',
           success: (res) => {
-            let qaShare = this.getCookie('qaShare')
+            let qaShare = this.getCookie('worldShare')
             if (!qaShare) {
               this.addIntegral(user.uid, 1)
-              this.setCookie('qaShare', 'isok')
             }
+            ga('send', 'event', '用户分享', '发送给朋友', '世界杯活动')
           },
           cancel: function () {
             // 用户取消分享后执行的回调函数

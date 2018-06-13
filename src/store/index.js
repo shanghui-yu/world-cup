@@ -6,21 +6,21 @@ const store = new Vuex.Store({
     selectObj: [],
     // 提交的球队投注信息
     indexs: [],
-    MatchRes: ["", "", ""]
+    MatchRes: ['', '', '']
   },
   mutations: {
     selectObjFun (state, b) {
       state.selectObj.push(b)
     },
-    setSelectIndex(state, b) {
+    setSelectIndex (state, b) {
       state.indexs.push(b)
     },
-    setMatchRes(state, json) {
+    setMatchRes (state, json) {
       state.MatchRes[json.index] = json.val
     },
-    initState(state){
-      state.MatchRes = ["", "", ""]
-      state.selectObj=[]
+    initState (state) {
+      state.MatchRes = ['', '', '']
+      state.indexs = []
       state.selectObj = []
     }
   },
@@ -28,13 +28,13 @@ const store = new Vuex.Store({
     selectObjFun (context, b) {
       context.commit('selectObjFun', b)
     },
-    setSelectIndex(context, b) {
+    setSelectIndex (context, b) {
       context.commit('setSelectIndex', b)
     },
-    setMatchRes(context, json) {
+    setMatchRes (context, json) {
       context.commit('setMatchRes', json)
     },
-    initState(context) {
+    initState (context) {
       context.commit('initState')
     }
   }

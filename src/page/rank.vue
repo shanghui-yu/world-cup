@@ -16,18 +16,18 @@
         <li v-for="(item,index) in list" :key="index">
           <span class="one">{{index+1}}</span>
           <span>{{item.nickname}}</span>
-          <span>{{item.score}}</span>
+          <span>{{item.total}}</span>
         </li>
         <li class="loading" v-if="list.length && !end">正在加载中</li>
         <li class="end" v-if="list.length && end">已经到底了</li>
-        <li class="data-null">
+        <li class="data-null" v-if="!list.length">
           暂无数据，敬请期待
         </li>
       </ul>
       <div class="me-rank" v-if="list.length">
-        <span>123</span>
+        <span>{{myUserinfo.ranking}}</span>
         <span>{{myUserinfo.nickname}}</span>
-        <span>{{myUserinfo.integral?myUserinfo.integral:'0'}}</span>
+        <span>{{myUserinfo.total}}</span>
       </div>
     </div>
     <Rule v-show="showRuleStatus" @showRule="showRule"></Rule>
@@ -40,7 +40,6 @@ import XHR from '../api'
 import HeaderTop from '../components/header-top.vue'
 import Rule from '../components/rule'
 import priceRule from '../components/price-rule.vue'
-import storage from '../store/storage.js'
 export default {
   data () {
     return {
@@ -50,7 +49,8 @@ export default {
       // 是否到底了
       end: false,
       // 自己的用户信息
-      myUserinfo:{},
+      myUserinfo: {},
+      uid: 'xiaohuids', // 用户openid
       list: []
     }
   },
@@ -60,10 +60,10 @@ export default {
     priceRule
   },
   created () {
-    this.getRank()
+    this.uid = this.getUid()
     this.getWxconfig()
     this.hideshare()
-    this.getMyUser()
+    this.getRank()
   },
   mounted () {
 
@@ -78,19 +78,6 @@ export default {
     tohome () {
       this.jump('/')
     },
-    getMyUser(){
-      let user = storage.get('userInfoWorldCup')
-      this.myUserinfo = JSON.parse(user)
-      let json={
-        uid:`${this.myUserinfo.uid}`
-      }
-      XHR.getUser(json).then((res) => {
-        let {data,status} = res.data
-        if(!status){
-          this.myUserinfo = data
-        }
-      })
-    },
     getRank () {
       if (this.loading) {
         return
@@ -98,13 +85,15 @@ export default {
       this.loading = 1
       let json = {
         page: 0,
+        uid: this.uid,
         size: 20
       }
       XHR.getRank(json).then(res => {
-        let {data, status} = res.data
+        let {data, status, rankingInfo} = res.data
         if (!status) {
+          this.myUserinfo = rankingInfo
           this.list = [...this.list, ...data]
-          if (data.length === 0) {
+          if (data.length < 20) {
             this.end = true
           } else {
             this.loading = 0
@@ -127,7 +116,7 @@ export default {
     height: 100%;
     width: 100%;
     overflow: hidden;
-    background: url('http://img5.168trucker.com/topic/images/worldCup/bg-two.jpg') 50% 50% no-repeat;
+    background: url('https://img5.168trucker.com/topic/images/worldCup/bg-two.jpg') 50% 50% no-repeat;
     background-size: cover;
     position: relative;
     display: flex;
@@ -138,13 +127,13 @@ export default {
     margin:0 auto;
     position: relative;
     width: 690px;
-    background: url('http://img5.168trucker.com/topic/images/worldCup/model-bg.png') no-repeat;
+    background: url('https://img5.168trucker.com/topic/images/worldCup/model-bg.png') no-repeat;
     height: 1058px;
     display: flex;
     flex-direction: column;
     .title{
       margin:60px auto 0px;
-      background: url('http://img5.168trucker.com/topic/images/worldCup/rank-title.png') 50% 50%;
+      background: url('https://img5.168trucker.com/topic/images/worldCup/rank-title.png') 50% 50%;
       background-size: cover;
       width: 350px;
       height: 88px;
@@ -180,13 +169,13 @@ export default {
       padding-bottom: 98px;
       box-sizing: border-box;
     }
-    
+
     .rank-box li{
       line-height: 80px;
       height: 80px;
       border-bottom: 1px solid #28600e;
       &:nth-child(1){
-        background: url('http://img5.168trucker.com/topic/images/worldCup/rank1.png') no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/rank1.png') no-repeat;
         height: 104px;
         border:none;
         .one{
@@ -194,7 +183,7 @@ export default {
         }
       }
       &:nth-child(2){
-        background: url('http://img5.168trucker.com/topic/images/worldCup/rank2.png') no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/rank2.png') no-repeat;
         height: 104px;
         border:none;
         .one{
@@ -202,7 +191,7 @@ export default {
         }
       }
       &:nth-child(3){
-        background: url('http://img5.168trucker.com/topic/images/worldCup/rank3.png') no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/rank3.png') no-repeat;
         height: 104px;
         border:none;
         .one{

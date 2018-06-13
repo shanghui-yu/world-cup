@@ -3,21 +3,27 @@
   <div class="status">提交成功</div>
   <div class="tips">请长按关注下方公众号，<br> 您将第一时间获得中奖消息</div>
   <figure class="code">
-    <img src="http://img5.168trucker.com/topic/images/worldCup/code.png" alt="">
+    <img src="https://img5.168trucker.com/topic/images/worldCup/code.png" alt="">
     <figcaption @click="toSubmit">直接去补全我的领奖信息</figcaption>
   </figure>
 </div>
 </template>
 
 <script>
+import storage from '../store/storage.js'
 export default {
   data () {
     return {
-      msg: ''
+      userinfo: {}
     }
   },
   methods: {
     toSubmit () {
+      let userinfo = storage.get('userInfoWorldCup')
+      if (userinfo) {
+        this.userinfo = JSON.parse(userinfo)
+      }
+      ga('send', 'event', '点击补全信息', '世界杯活动', this.userinfo.nickname)
       this.jump('/Submit')
     }
   }
@@ -39,7 +45,7 @@ export default {
     margin-bottom: 20px;
     &::before{
       content: '';
-      background: url('http://img5.168trucker.com/topic/images/worldCup/submit-ok.png') no-repeat;
+      background: url('https://img5.168trucker.com/topic/images/worldCup/submit-ok.png') no-repeat;
       margin: 50px auto 20px;
       width: 185px;
       height: 186px;

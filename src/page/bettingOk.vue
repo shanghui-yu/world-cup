@@ -7,7 +7,7 @@
     </HeaderTop>
     <div class="main-bg">
       <div class="main" v-if="!SubmitStatus">
-        <img src="http://img5.168trucker.com/topic/images/worldCup/betting-title.png" class="title" alt="">
+        <img :src="`https://img5.168trucker.com/topic/images/worldCup/betting-title${betting.length}.png`" class="title" alt="">
         <ul>
           <li v-for="(item,index) in betting" :key="index">
             <div class="team">
@@ -19,13 +19,13 @@
             <div class="team">
               <figure>
                 <img
-                  src="http://img5.168trucker.com/topic/images/worldCup/win.png"
+                  src="https://img5.168trucker.com/topic/images/worldCup/win.png"
                   v-if="item.type=='胜'" alt="">
-                <img src="http://img5.168trucker.com/topic/images/worldCup/fail.png"
+                <img src="https://img5.168trucker.com/topic/images/worldCup/fail.png"
                   v-if="item.type=='负'"
                   alt="">
                 <img
-                  src="http://img5.168trucker.com/topic/images/worldCup/flat.png"
+                  src="https://img5.168trucker.com/topic/images/worldCup/flat.png"
                   v-if="item.type=='平'"
                   alt="">
               </figure>
@@ -61,9 +61,9 @@ export default {
       showRuleStatus: false,
       showPriceRuleStatus: false,
       SubmitStatus: false,
-      uid:'',
-      type:'',
-      round:''
+      uid: '',
+      type: '',
+      round: ''
     }
   },
   components: {
@@ -77,14 +77,13 @@ export default {
     MatchRes () { return this.$store.state.MatchRes }
   },
   created () {
-    this.uid=this.$route.params.uid
+    this.uid = this.$route.params.uid
     this.type = this.$route.params.type
     this.round = this.$route.params.round
     this.getWxconfig()
     this.hideshare()
   },
   mounted () {
-
   },
   methods: {
     showRule () {
@@ -104,16 +103,16 @@ export default {
     },
     submit () {
       let json = {
-        uid:this.uid,
-        type:this.type,
-        matchRes:this.MatchRes.join(',')
+        uid: this.uid,
+        type: this.type,
+        matchRes: this.MatchRes.join(',')
       }
-      XHR.postMyJingCai(json).then(res=>{
-        let {status,message} = res.data
-        if(!status){
+      XHR.postMyJingCai(json).then(res => {
+        let {status, message} = res.data
+        if (!status) {
           this.checkIsperiods()
           this.SubmitStatus = true
-        }else{
+        } else {
           alert(message)
         }
       })
@@ -127,7 +126,7 @@ export default {
     height: 100%;
     width: 100%;
     overflow: hidden;
-    background: url('http://img5.168trucker.com/topic/images/worldCup/bg-two.jpg') 50% 50% no-repeat;
+    background: url('https://img5.168trucker.com/topic/images/worldCup/bg-two.jpg') 50% 50% no-repeat;
     background-size: cover;
     position: relative;
     display: flex;
@@ -137,7 +136,7 @@ export default {
     margin:0 auto;
     position: relative;
     width: 690px;
-    background: url('http://img5.168trucker.com/topic/images/worldCup/model-bg.png') no-repeat;
+    background: url('https://img5.168trucker.com/topic/images/worldCup/model-bg.png') no-repeat;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -157,7 +156,7 @@ export default {
         margin:24px auto;
       }
       li{
-        background: url('http://img5.168trucker.com/topic/images/worldCup/card-bg.png') no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/card-bg.png') no-repeat;
         width: 572px;
         height: 230px;
         display: flex;
@@ -198,7 +197,7 @@ export default {
       }
       .next{
         margin: 20px auto 34px;
-         background: url('http://img5.168trucker.com/topic/images/worldCup/next.png') no-repeat;
+         background: url('https://img5.168trucker.com/topic/images/worldCup/next.png') no-repeat;
          width: 320px;
          height: 96px;
          font-size: 0;
