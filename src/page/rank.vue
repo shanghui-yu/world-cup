@@ -15,7 +15,7 @@
       <ul class="rank-box" @scroll="scrollMore">
         <li v-for="(item,index) in list" :key="index">
           <span class="one">{{index+1}}</span>
-          <span>{{item.nickname}}</span>
+          <span>{{item.nickname?item.nickname:'e族卡友'}}</span>
           <span>{{item.total}}</span>
         </li>
         <li class="loading" v-if="list.length && !end">正在加载中</li>
@@ -26,7 +26,7 @@
       </ul>
       <div class="me-rank" v-if="list.length">
         <span>{{myUserinfo.ranking}}</span>
-        <span>{{myUserinfo.nickname}}</span>
+        <span>{{myUserinfo.nickname ?myUserinfo.nickname :"e族卡友"}}</span>
         <span>{{myUserinfo.total}}</span>
       </div>
     </div>
