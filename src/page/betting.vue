@@ -10,9 +10,9 @@
       <div class="table">
           <div class="card" @click="showResult(item,ind)" v-for="(item ,ind) in cards.imgs" :key="ind">
             <!-- 默认卡牌 -->
-            <figure class="defalt"><img :src="item.url" alt=""></figure>
+            <figure class="defalt"><img :src="`${item.url}!300`" alt=""></figure>
             <div class="result" :total="items.type" v-for="items in result" v-if="items.index == ind" :key="items.id">
-              <figure><img :src="items.team_A_logo" alt=""></figure>
+              <figure><img :src="items.randomTeam>0.5?items.team_A_logo:items.team_B_logo" alt=""></figure>
             </div>
           </div>
           <div :class="[bettingStatus?'submit':'table-btn']" @click="again"></div>
@@ -21,12 +21,12 @@
     <!-- 翻牌结果 -->
     <Guessing
       v-if="showResultStatus"
-      :selectObj = "selectimg"
+      :selectObj="selectimg"
       :matchList="cards.matchList"
       @showResult="showResult"
       @select="select">
     </Guessing>
-
+    <toast :msg="toastMsg" v-if="toastState"></toast>
     <Rule v-show="showRuleStatus" @showRule="showRule"></Rule>
     <priceRule v-show="showPriceRuleStatus" @showPriceRule="showPriceRule"></priceRule>
   </div>
@@ -38,15 +38,20 @@ import storage from '../store/storage.js'
 import priceRule from '../components/price-rule.vue'
 import Guessing from '../components/guessing.vue'
 import XHR from '../api'
+import toast from "../components/toast"
 export default {
   data () {
     return {
       showResultStatus: false,
       showRuleStatus: false,
       showPriceRuleStatus: false,
+      uid:'xiaohuids', // 用户openid
       // 当前选择品牌
       selectimg: {},
+      // 选中当前车系标志
       selectIndex: null,
+      // 选中所有的车系品牌下标
+      selectIndexs:[],
       // 翻牌状态
       bettingStatus: 0,
       cards: {}
@@ -55,13 +60,23 @@ export default {
   components: {
     Rule,
     priceRule,
+    toast,
     Guessing
   },
   computed: {
-    result () { return this.$store.state.selectObj }
+    result () { return this.$store.state.selectObj },
+    indexs () { return this.$store.state.indexs },
+    MatchRes () { return this.$store.state.MatchRes }
   },
   created () {
+    this.getWxconfig()
+    this.hideshare()
+
     this.getMatch()
+    // 清空状态管理
+    this.$store.dispatch('initState')
+
+    // this.uid = this.getUid()
   },
   mounted () {
 
@@ -76,18 +91,13 @@ export default {
     tohome () {
       this.jump('/')
     },
-    checkIsperiods () {
-      let periods = storage.get('periods')
-      if (!periods || (periods && periods.round !== this.cards.round)) {
-        storage.set('periods', this.cards)
-      }
-    },
+    
+    // 获取竞猜数据
     getMatch () {
       XHR.getJingCai().then(res => {
         let {status, data, message} = res.data
         if (!status) {
           this.cards = data
-          this.checkIsperiods()
         } else {
           alert(message)
         }
@@ -99,8 +109,8 @@ export default {
       翻牌以后设置当前选择的图片
     */
     showResult (item, index) {
-      let periods = storage.get('periods')
-      if (periods && periods.round === this.cards.round) {
+      let periods = JSON.parse(storage.get('periods'))
+      if (periods && periods === this.cards.round) {
         alert('每人每轮只能提交一次')
         return
       }
@@ -108,25 +118,29 @@ export default {
         alert('每人每轮只能选择三次')
         return
       }
+      if (index) {
+        if(this.selectIndexs.indexOf(index)>-1){
+          return
+        }
+        this.selectIndex = index
+        this.selectIndexs.push(index)
+      }
       this.showResultStatus = !this.showResultStatus
       if (item) {
         this.selectimg = item
-      }
-      if (index) {
-        this.selectIndex = index
       }
     },
 
     // 洗牌或提交
     again () {
       if (!this.bettingStatus) {
-        console.log('洗牌')
+        this.getMatch()
       } else {
-        console.log('提交')
-        this.jump('/BettingOk')
+        this.jump(`/BettingOk/${this.uid}/${this.cards.type}/${this.cards.round}`)
       }
     },
-    select (json) {
+    select (json,type) {
+      // 设置翻牌的下标
       json.index = this.selectIndex
       this.$store.dispatch('selectObjFun', json)
       if (!this.bettingStatus) {

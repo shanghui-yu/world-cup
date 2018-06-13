@@ -36,6 +36,9 @@ export default {
     priceRule
   },
   created () {
+    this.getWxconfig()
+    this.hideshare()
+    this.share()
     if (window.innerHeight < 1182) {
       this.mtop = '115px'
       this.top = '445px'

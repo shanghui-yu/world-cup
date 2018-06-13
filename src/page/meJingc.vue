@@ -7,7 +7,7 @@
     </HeaderTop>
 
     <div class="main">
-      <ul @scroll="scrollMore">
+      <ul>
         <li v-for="(item ,index) in jingc" :key="index">
           <h3 class="title">第一轮</h3>
           <div class="betting-box">
@@ -24,8 +24,6 @@
             </div>
           </div>
         </li>
-        <li class="loading" v-if="!end">正在加载中</li>
-        <li class="end" v-else>已经到底了</li>
       </ul>
     </div>
     <Rule v-show="showRuleStatus" @showRule="showRule"></Rule>
@@ -37,15 +35,13 @@
 import HeaderTop from '../components/header-top.vue'
 import Rule from '../components/rule'
 import priceRule from '../components/price-rule.vue'
+import XHR from "../api";
 export default {
   data () {
     return {
       showRuleStatus: false,
       showPriceRuleStatus: false,
-      // 加载中状态
-      loading: false,
-      // 是否到底了
-      end: false,
+      uid:'xiaohuids', // 用户openid
       jingc: [
         {
           total: 30,
@@ -103,12 +99,25 @@ export default {
     priceRule
   },
   created () {
-
+    // this.uid = this.getUid()
+    this.getWxconfig()
+    this.hideshare()
+    this.getMyJingCai()
   },
   mounted () {
 
   },
   methods: {
+    // 获取我的竞猜信息
+    getMyJingCai(){
+      let json = {
+        uid:this.uid
+      }
+      XHR.getMyJingCai(json).then(res=>{
+        let {status,data} = res.data
+        console.log(data)
+      })
+    },
     showRule () {
       this.showRuleStatus = !this.showRuleStatus
     },
@@ -117,11 +126,6 @@ export default {
     },
     tohome () {
       this.jump('/')
-    },
-    scrollMore (e) {
-      if (e.target.scrollTop + e.target.clientHeight > e.target.scrollHeight - 100 && !this.loading) {
-        console.log(123)
-      }
     }
   }
 }

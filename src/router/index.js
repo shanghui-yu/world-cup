@@ -35,7 +35,7 @@ export default new Router({
       component: Betting
     },
     {
-      path: '/BettingOk',
+      path: '/BettingOk/:uid/:type/:round',
       name: 'BettingOk',
       component: BettingOk
     },

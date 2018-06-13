@@ -1,4 +1,5 @@
 import XHR from '../api'
+import storage from '../store/storage.js'
 var wx = require('weixin-js-sdk')
 export default {
   computed: {},
@@ -46,6 +47,14 @@ export default {
       /* eslint-disable */
         return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ''])[1].replace(/\+/g, '%20')) || null
        /* eslint-enable */
+    },
+    getUid(){
+      let userinfo = storage.get('userInfoWorldCup')
+      if (userinfo) {
+        return JSON.parse(userinfo).uid
+      }else{
+        return ''
+      }
     },
     getWxconfig () {
       XHR.getWechat({
@@ -95,9 +104,9 @@ export default {
         })
         // 分享到朋友圈
         wx.onMenuShareTimeline({
-          title: '呼朋唤友来答题，潍柴王者就是你…',
-          link: `http://www.vr0101.com/qa/index.html?shareUid=${user.uid}&time=${time}`,
-          imgUrl: 'http://www.vr0101.com/qa/static/img/share.jpg',
+          title: '卡车世界杯竞猜赢大奖',
+          link: window.location.href,
+          imgUrl: 'https://img5.168trucker.com/topic/images/worldCup/share.png',
           success: (res) => {
             let qaShare = this.getCookie('qaShare')
             if (!qaShare) {
@@ -111,10 +120,10 @@ export default {
         })
         // 分享给朋友
         wx.onMenuShareAppMessage({
-          title: '呼朋唤友来答题，潍柴王者就是你…',
-          desc: '呼朋唤友来答题，潍柴王者就是你…',
-          link: `http://www.vr0101.com/qa/index.html?shareUid=${user.uid}&time=${time}`,
-          imgUrl: 'http://www.vr0101.com/qa/static/img/share.jpg',
+          title: '卡车世界杯竞猜赢大奖',
+          desc: '卡车世界杯，全国卡友都参加，电视、手机、车载蓝牙、车模奖品多多，参与就有礼！',
+          link: window.location.href,
+          imgUrl: 'https://img5.168trucker.com/topic/images/worldCup/share.png',
           success: (res) => {
             let qaShare = this.getCookie('qaShare')
             if (!qaShare) {

@@ -11,7 +11,7 @@
     <span class="des">所驾车型</span>
     <div class="input-moni">
       <span :class="[carText=='请选择目前所驾车型'?'placeholder':'select']">{{carText}}</span>
-      <select name="" id="" @change="changeCar" v-model="forms.cartype">
+      <select name="" id="" @change="changeCar" v-model="forms.model">
         <option value="中重卡">中重卡</option>
         <option value="轻微卡">轻微卡</option>
       </select>
@@ -33,7 +33,7 @@ export default {
       forms: {
         name: '',
         phone: '',
-        cartype: '',
+        model: '',
         address: ''
       }
     }
@@ -44,7 +44,6 @@ export default {
     },
     changeCar (e) {
       this.carText = e.target.value
-      console.log(e.target.value)
     }
   }
 }

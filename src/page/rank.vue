@@ -15,16 +15,19 @@
       <ul class="rank-box" @scroll="scrollMore">
         <li v-for="(item,index) in list" :key="index">
           <span class="one">{{index+1}}</span>
-          <span>{{item.name}}</span>
-          <span>{{item.total}}</span>
+          <span>{{item.nickname}}</span>
+          <span>{{item.score}}</span>
         </li>
-        <li class="loading" v-if="!end">正在加载中</li>
-        <li class="end" v-else>已经到底了</li>
+        <li class="loading" v-if="list.length && !end">正在加载中</li>
+        <li class="end" v-if="list.length && end">已经到底了</li>
+        <li class="data-null">
+          暂无数据，敬请期待
+        </li>
       </ul>
-      <div class="me-rank">
+      <div class="me-rank" v-if="list.length">
         <span>123</span>
-        <span>昵称</span>
-        <span>94</span>
+        <span>{{myUserinfo.nickname}}</span>
+        <span>{{myUserinfo.integral?myUserinfo.integral:'0'}}</span>
       </div>
     </div>
     <Rule v-show="showRuleStatus" @showRule="showRule"></Rule>
@@ -37,6 +40,7 @@ import XHR from '../api'
 import HeaderTop from '../components/header-top.vue'
 import Rule from '../components/rule'
 import priceRule from '../components/price-rule.vue'
+import storage from '../store/storage.js'
 export default {
   data () {
     return {
@@ -45,32 +49,9 @@ export default {
       loading: false,
       // 是否到底了
       end: false,
-      list: [
-        {
-          total: 100,
-          name: '李大嘴'
-        },
-        {
-          total: 100,
-          name: '李大嘴'
-        },
-        {
-          total: 100,
-          name: '李大嘴'
-        },
-        {
-          total: 100,
-          name: '李大嘴'
-        },
-        {
-          total: 100,
-          name: '李大嘴'
-        },
-        {
-          total: 100,
-          name: '李大嘴'
-        }
-      ]
+      // 自己的用户信息
+      myUserinfo:{},
+      list: []
     }
   },
   components: {
@@ -80,6 +61,9 @@ export default {
   },
   created () {
     this.getRank()
+    this.getWxconfig()
+    this.hideshare()
+    this.getMyUser()
   },
   mounted () {
 
@@ -93,6 +77,19 @@ export default {
     },
     tohome () {
       this.jump('/')
+    },
+    getMyUser(){
+      let user = storage.get('userInfoWorldCup')
+      this.myUserinfo = JSON.parse(user)
+      let json={
+        uid:`${this.myUserinfo.uid}`
+      }
+      XHR.getUser(json).then((res) => {
+        let {data,status} = res.data
+        if(!status){
+          this.myUserinfo = data
+        }
+      })
     },
     getRank () {
       if (this.loading) {
@@ -167,6 +164,7 @@ export default {
         line-height: 32px;
         height: 32px;
         color: #fff948;
+        word-break: break-all;
         &:last-child{
           width: 187px;
         }
@@ -182,6 +180,7 @@ export default {
       padding-bottom: 98px;
       box-sizing: border-box;
     }
+    
     .rank-box li{
       line-height: 80px;
       height: 80px;
@@ -214,6 +213,14 @@ export default {
         color: #fff;
       }
 
+    }
+    .data-null{
+      height: 400px !important;
+      background: inherit !important;
+      color: #fff;
+      justify-content: center;
+      align-items: center;
+      font-size: 36px;
     }
     .me-rank{
       position: absolute;

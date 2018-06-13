@@ -53,35 +53,17 @@ import HeaderTop from '../components/header-top.vue'
 import Rule from '../components/rule'
 import priceRule from '../components/price-rule.vue'
 import SubmitOk from '../components/submit-ok.vue'
+import storage from '../store/storage.js'
+import XHR from '../api'
 export default {
   data () {
     return {
       showRuleStatus: false,
       showPriceRuleStatus: false,
-      SubmitStatus: false
-      // betting: [
-      //   {
-      //     teamAImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
-      //     teamAName: 'sdsad',
-      //     teamBName: 'b萨达萨达',
-      //     result: '0',
-      //     teamBImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png'
-      //   },
-      //   {
-      //     teamAImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
-      //     teamAName: 'sds2ad',
-      //     teamBName: 'b萨达2萨达',
-      //     result: '0',
-      //     teamBImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png'
-      //   },
-      //   {
-      //     teamAImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png',
-      //     teamAName: 'sds2ad',
-      //     teamBName: 'b萨达3萨达',
-      //     result: '0',
-      //     teamBImg: 'http://img5.168trucker.com/topic/images/worldCup/price1.png'
-      //   }
-      // ]
+      SubmitStatus: false,
+      uid:'',
+      type:'',
+      round:''
     }
   },
   components: {
@@ -91,9 +73,15 @@ export default {
     SubmitOk
   },
   computed: {
-    betting () { return this.$store.state.selectObj }
+    betting () { return this.$store.state.selectObj },
+    MatchRes () { return this.$store.state.MatchRes }
   },
   created () {
+    this.uid=this.$route.params.uid
+    this.type = this.$route.params.type
+    this.round = this.$route.params.round
+    this.getWxconfig()
+    this.hideshare()
   },
   mounted () {
 
@@ -108,8 +96,27 @@ export default {
     tohome () {
       this.jump('/')
     },
+    checkIsperiods () {
+      let periods = storage.get('periods')
+      if (!periods || (periods && periods !== this.round)) {
+        storage.set('periods', this.round)
+      }
+    },
     submit () {
-      this.SubmitStatus = true
+      let json = {
+        uid:this.uid,
+        type:this.type,
+        matchRes:this.MatchRes.join(',')
+      }
+      XHR.postMyJingCai(json).then(res=>{
+        let {status,message} = res.data
+        if(!status){
+          this.checkIsperiods()
+          this.SubmitStatus = true
+        }else{
+          alert(message)
+        }
+      })
     }
   }
 }

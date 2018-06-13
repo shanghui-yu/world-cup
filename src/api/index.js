@@ -1,7 +1,7 @@
 import fetch from './ajax'
 
-export const DEBUG = false // 是否开发模式
-const HTTP_DEV = 'http://test.vr0101.com' // 测试地址
+export const DEBUG = true // 是否开发模式
+const HTTP_DEV = 'https://topic.vr0101.com' // 测试地址
 
 const HTTPS = 'http://topic.kacheyizu.cn' // 正式地址
 

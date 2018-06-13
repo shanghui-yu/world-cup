@@ -35,7 +35,8 @@ export default {
     SubmitOk
   },
   created () {
-
+    this.getWxconfig()
+    this.hideshare()
   },
   mounted () {
 
@@ -51,7 +52,16 @@ export default {
       this.jump('/')
     },
     submit (json) {
-      console.log(json)
+      XHR.updateUser(json).then(res=>{
+        let {status,message} = res.data
+        if(!status){
+          if(!alert('提交成功')){
+            this.jump('/')
+          }
+        }else{
+          alert(message)
+        }
+      })
     }
   }
 }
