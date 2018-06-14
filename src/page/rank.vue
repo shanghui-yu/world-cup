@@ -50,6 +50,7 @@ export default {
       end: false,
       // 自己的用户信息
       myUserinfo: {},
+      page:0,
       uid: 'xiaohuids', // 用户openid
       list: []
     }
@@ -63,6 +64,7 @@ export default {
     this.uid = this.getUid()
     this.getWxconfig()
     this.hideshare()
+    this.share()
     this.getRank()
   },
   mounted () {
@@ -84,7 +86,7 @@ export default {
       }
       this.loading = 1
       let json = {
-        page: 0,
+        page: this.page,
         uid: this.uid,
         size: 20
       }
@@ -146,14 +148,16 @@ export default {
       span{
         display: inline-block;
         text-align: center;
-        text-align: center;
         width: 219px;
-        padding: 32px 0 15px;
+        line-height: 80px;
         font-size: 30px;
-        line-height: 32px;
-        height: 32px;
+        line-height: 80px;
+        height: 80px;
         color: #fff948;
         word-break: break-all;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
         &:last-child{
           width: 187px;
         }

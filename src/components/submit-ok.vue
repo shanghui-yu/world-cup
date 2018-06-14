@@ -63,6 +63,7 @@ export default {
       margin: 30px auto;
       width: 448px;
       height: 449px;
+      pointer-events:auto;
     }
     figcaption{
       font-size: 30px;

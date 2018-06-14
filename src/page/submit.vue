@@ -46,6 +46,7 @@ export default {
   created () {
     this.getWxconfig()
     this.hideshare()
+    this.share()
     let userinfo = storage.get('userInfoWorldCup')
     if (userinfo) {
       this.userinfo = JSON.parse(userinfo)

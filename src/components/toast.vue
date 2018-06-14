@@ -30,6 +30,7 @@ export default {
     left: 50%;
     top: 50%;
     padding: 0;
+    z-index: 1000;
   }
   .toast {
     max-width: 80%;

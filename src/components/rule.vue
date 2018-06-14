@@ -9,7 +9,7 @@
       <h3 class="title">活动规则</h3>
       <p>1.活动时间：2018.6.14-2018.7.15</p>
       <p>2.公布竞猜结果：每三天公布一次，请关注“卡车e族顶级俱乐部”。</p>
-      <p> 3.活动规则及玩法：</p>
+      <p>3.活动规则及玩法：</p>
       <p>
         世界杯期间，根据每天比赛，竞猜获胜队伍。八个车型每个车型随机对应一支比赛球队，自由选择车型（球队）预测赛果：
       </p>
@@ -23,8 +23,9 @@
         <em>淘汰赛：</em> 任意翻牌，翻开为球队竞猜，可选择一支球队竞猜猜对得10分，猜错不得分；翻开为礼品或积分，直接获得奖励。
       </p>
       <p>
-        将活动分享到朋友圈得1积分。注：每人每天仅一次竞猜机会。请填写真实信息，以便为您寄出奖品。4.奖品邮寄：世界杯活动结束后一个月内寄出。
+        将活动分享到朋友圈得1积分。注：每人每天仅一次竞猜机会。请填写真实信息，以便为您寄出奖品。
       </p>
+      <p>4.奖品邮寄：世界杯活动结束后一个月内寄出。</p>
       <p>如出现排名相同的情况，则第一次进入活动时间早的用户排名靠前</p>
       <p>本活动最终解释权归卡车e族所有</p>
       <button class="know" @click="showRule">我知道了</button>
@@ -72,13 +73,14 @@ export default {
     width: 690px;
     background: url('https://img5.168trucker.com/topic/images/worldCup/model-bg.png');
     height: 1058px;
-      overflow: visible;
+    overflow: visible;
     .main{
       -webkit-overflow-scrolling: touch;
       overflow-y: auto;
       height: 1028px;
       margin-top: 30px;
       padding-bottom: 30px;
+      box-sizing: border-box;
     }
     .close{
       width: 88px;

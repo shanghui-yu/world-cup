@@ -74,7 +74,7 @@ export default {
   created () {
     this.getWxconfig()
     this.hideshare()
-
+    this.share()
     this.getMatch()
     // 清空状态管理
     this.$store.dispatch('initState')

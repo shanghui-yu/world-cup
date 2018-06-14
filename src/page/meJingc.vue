@@ -13,7 +13,7 @@
           <div class="betting-box">
             <div class="header">
               投注方式：{{item.number.length}}串1
-              <div class="result">开奖结果：{{item.score}}</div>
+              <div class="result" v-if="item.Integral">开奖结果：{{item.Integral}}</div>
             </div>
             <div class="footer">
               <div
@@ -60,6 +60,7 @@ export default {
     this.uid = this.getUid()
     this.getWxconfig()
     this.hideshare()
+    this.share()
     this.getMyJingCai()
     if (storage.get('teams')) {
       this.teams = JSON.parse(storage.get('teams'))

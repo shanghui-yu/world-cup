@@ -82,6 +82,7 @@ export default {
     this.round = this.$route.params.round
     this.getWxconfig()
     this.hideshare()
+    this.share()
   },
   mounted () {
   },
@@ -152,6 +153,8 @@ export default {
       flex: 1;
       width: 100%;
       height: 100%;
+      padding-bottom: 30px;
+      box-sizing: border-box;
       .title{
         margin:24px auto;
       }
@@ -196,7 +199,7 @@ export default {
         }
       }
       .next{
-        margin: 20px auto 34px;
+        margin: 20px auto 0px;
          background: url('https://img5.168trucker.com/topic/images/worldCup/next.png') no-repeat;
          width: 320px;
          height: 96px;

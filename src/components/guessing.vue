@@ -67,7 +67,7 @@ export default {
       this.$emit('showResult', '取消')
     },
     select (e) {
-      this.showResult()
+      this.$emit('showResult')
       // 设置主场球队状态
       let mactchRes = null
       switch (e) {
