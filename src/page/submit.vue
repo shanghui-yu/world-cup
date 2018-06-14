@@ -88,11 +88,7 @@ export default {
         this.loading = false
         return
       }
-      let user = localStorage.getItem('userInfoWorldCup')
-      if (user) {
-        user = JSON.parse(user)
-        json.uid = user.uid // user.uid
-      }
+      json.uid = this.userinfo.uid // user.uid
       XHR.updateUser(json).then(res => {
         let {status, message} = res.data
         if (!status) {

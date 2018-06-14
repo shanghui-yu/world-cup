@@ -57,6 +57,7 @@ export default {
       // 翻牌状态
       bettingStatus: 0,
       clickNum: 0,
+      whiteList:['oq10u1bjVsiy276-ExPUrTbK0fQY','oq10u1RPuGvQDdFGA7XuWccR1MDU','oq10u1fDhu3rJMpRT-cTyPvYjVt4'],
       cards: {}
     }
   },
@@ -78,14 +79,15 @@ export default {
     this.getMatch()
     // 清空状态管理
     this.$store.dispatch('initState')
-
+    
     let userinfo = storage.get('userInfoWorldCup')
     if (userinfo) {
       this.userinfo = JSON.parse(userinfo)
     }
   },
   mounted () {
-
+    // 清空状态管理
+    this.$store.dispatch('initState')
   },
   methods: {
     showRule () {
@@ -142,8 +144,8 @@ export default {
         this.selectIndexs.splice(index, 1)
         return
       }
-      let periods = JSON.parse(storage.get('periods'))
-      if (periods && periods === this.cards.round) {
+      let periods = storage.get('periods')
+      if (periods && periods === this.cards.round && this.whiteList.indexOf(this.userinfo.uid)<0) {
         this.showToast('每人每轮只能提交一次')
         return
       }

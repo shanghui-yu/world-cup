@@ -45,7 +45,7 @@ export default {
     return {
       showRuleStatus: false,
       showPriceRuleStatus: false,
-      uid: 'xiaohuids', // 用户openid
+      uid: 'oq10u1eEnWdb-mCZw8fJXWP0_lEo', // 用户openid
       jingc: [],
       rounds: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二', '十三', '十四', '十五', '十六', '十七'],
       teams: []
@@ -77,15 +77,16 @@ export default {
       XHR.getMyJingCai(json).then(res => {
         let {status, data} = res.data
         if (!status && data) {
-          // this.jingc = data.group
           this.jingc = this.picing(data.group)
-          console.log(this.jingc)
         }
       })
     },
     picing (data) {
       if (data && data.length) {
         data.forEach((element, index) => {
+          if(element.round==this.teams[index].round){
+            element.teams = this.teams[index].matchList
+          }
           element.day = this.rounds[element.round - 1]
           element.number = element.matchRes.filter((item) => {
             return item

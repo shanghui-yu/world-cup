@@ -3,13 +3,27 @@
   <div class="pop">
    <div class="close"  @click="showResult(1)"></div>
    <div class="main">
-     <figure>
-      <img :src="`${selectObj.url}!300`" alt="" :class="['fileinY',flipInY?'hide':'',showPrice?'none':'']">
-      <img :src="randomTeam>0.5?resultTeam.team_A_logo:resultTeam.team_B_logo" alt="" :class="['resultImg',showPrice?'show':'']">
-    </figure>
+     <div class="img-box">
+       <div :class="['fileinY',flipInY?'hide':'',showPrice?'none':'']">
+         <img :src="`${selectObj.url}!300`" alt="" >
+       </div>
+      
+      <div :class="['resultImg',showPrice?'show':'']">
+        <figure>
+          <img :src="randomTeam>0.5?resultTeam.team_A_logo:resultTeam.team_B_logo" alt="" >
+          <figcaption>{{randomTeam>0.5?resultTeam.team_A_name:resultTeam.team_B_name}}</figcaption>
+        </figure>
+        <span class="vs">VS</span>
+        <figure>
+          <img :src="randomTeam>0.5?resultTeam.team_B_logo:resultTeam.team_A_logo" alt="" >
+          <figcaption>{{randomTeam>0.5?resultTeam.team_B_name:resultTeam.team_A_name}}</figcaption>
+        </figure>
+        <!-- <img :src="randomTeam>0.5?resultTeam.team_A_logo:resultTeam.team_B_logo" alt="" > -->
+      </div>
+    </div>
     <!-- title -->
      <span class="name" v-if="!showPrice">{{selectObj.factory}}</span>
-     <span class="name" v-else>{{randomTeam>0.5?resultTeam.team_A_name:resultTeam.team_B_name}}</span>
+     <span class="team-name" v-else><em>押注球队：</em>{{randomTeam>0.5?resultTeam.team_A_name:resultTeam.team_B_name}}队</span>
 
      <span class="des">{{selectObj.desc}}</span>
    </div>
@@ -149,8 +163,8 @@ export default {
     flex-direction: column;
     color: #fff;
     margin-top: 225px;
-    figure{
-      width: 320px;
+    .img-box{
+      width: 400px;
       height: 320px;
       margin:54px auto 30px;
       text-align: center;
@@ -159,34 +173,83 @@ export default {
         border:1px solid #fff;
         border-radius: 50%;
         overflow: hidden;
-        width: 100%;
-        height: 100%;
+        width: 320px;
+        height: 320px;
         object-fit: cover;
       }
       .resultImg{
-        width: 0;
-        opacity: 0;
+        display: inline-block;
+        // width: 0;
+        // opacity: 0;
+        transform: translate3d(0,0,0);
+        transform: scaleX(0);
         transition: all 0.5s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 400px;
+        height: 320px;
+        overflow: hidden;
+        figure{
+          width: 140px;
+          overflow: hidden;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          img{
+            width: 140px;
+            height: 140px;
+            border:1px solid #fff;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-top: 20px;
+          }
+          figcaption{
+            margin-top: 30px;
+            font-weight: bold;
+            font-size: 28px;
+            overflow: hidden;
+            color: #fff;
+          }
+        }
+        span{
+          display: block;
+          flex:1;
+          font-size: 50px;
+          letter-spacing: 3px;
+          margin-top: -50px;
+        }
         &.show{
-          width: 100%;
-          opacity: 1;
+          // width: 100%;
+          transform: scaleX(1);
+          // opacity: 1;
         }
       }
       .fileinY{
-        width: 100%;
+        // width: 100%;
+        transform: scaleX(1);
         transition: all 0.5s ease;
         &.hide{
-          width: 0;
+          transform: scaleX(0);
+          // width: 0;
         }
         &.none{
           display: none;
         }
       }
     }
-    .name{
-      font-size: 48px;
+    .name,.team-name{
+      font-size: 44px;
       line-height: 68px;
       margin-bottom: 7px;
+      font-weight: bold;
+    }
+    .team-name{
+      em{
+        font-size: 30px;
+      }
+      font-size: 40px;
     }
     .des{
       font-size: 28px;

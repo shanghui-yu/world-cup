@@ -68,7 +68,7 @@ export default {
             timestamp: data.timestamp,
             nonceStr: data.nonceStr,
             signature: data.signature,
-            jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'menuItem:favorite', 'showAllNonBaseMenuItem', 'hideMenuItems']
+            jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'showAllNonBaseMenuItem', 'hideMenuItems']
           })
         } catch (e) {}
       })
@@ -112,7 +112,7 @@ export default {
             if (!qaShare) {
               this.addIntegral(user.uid, 1)
             }
-            ga('send', 'event', '用户分享', '朋友圈', '世界杯活动')
+            ga('send', 'event', '用户分享', '朋友圈', user.nickname)
           },
           cancel: (res) => {
             // 用户取消分享后执行的回调函数
@@ -129,7 +129,7 @@ export default {
             if (!qaShare) {
               this.addIntegral(user.uid, 1)
             }
-            ga('send', 'event', '用户分享', '发送给朋友', '世界杯活动')
+            ga('send', 'event', '用户分享', '发送给朋友', user.nickname)
           },
           cancel: function () {
             // 用户取消分享后执行的回调函数

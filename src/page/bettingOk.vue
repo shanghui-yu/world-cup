@@ -43,6 +43,7 @@
       </div>
       <SubmitOk v-else></SubmitOk>
     </div>
+    <toast :msg="toastMsg" v-if="toastState"></toast>
     <Rule v-show="showRuleStatus" @showRule="showRule"></Rule>
     <priceRule v-show="showPriceRuleStatus" @showPriceRule="showPriceRule"></priceRule>
   </div>
@@ -55,12 +56,16 @@ import priceRule from '../components/price-rule.vue'
 import SubmitOk from '../components/submit-ok.vue'
 import storage from '../store/storage.js'
 import XHR from '../api'
+import toast from '../components/toast'
 export default {
   data () {
     return {
       showRuleStatus: false,
       showPriceRuleStatus: false,
       SubmitStatus: false,
+      toastMsg: '',
+      toastState: false,
+      whiteList:['oq10u1bjVsiy276-ExPUrTbK0fQY','oq10u1RPuGvQDdFGA7XuWccR1MDU','oq10u1fDhu3rJMpRT-cTyPvYjVt4'],
       uid: '',
       type: '',
       round: ''
@@ -70,6 +75,7 @@ export default {
     HeaderTop,
     Rule,
     priceRule,
+    toast,
     SubmitOk
   },
   computed: {
@@ -87,6 +93,14 @@ export default {
   mounted () {
   },
   methods: {
+    showToast (msg) {
+      if (this.toastState) return
+      this.toastMsg = msg
+      this.toastState = true
+      setTimeout(() => {
+        this.toastState = false
+      }, 2e3)
+    },
     showRule () {
       this.showRuleStatus = !this.showRuleStatus
     },
@@ -103,6 +117,11 @@ export default {
       }
     },
     submit () {
+      let periods = storage.get('periods')
+      if(this.whiteList.indexOf(this.userinfo.uid)>-1 && periods && periods ==this.round){
+        this.SubmitStatus = true
+        return
+      }
       let json = {
         uid: this.uid,
         type: this.type,
@@ -114,7 +133,7 @@ export default {
           this.checkIsperiods()
           this.SubmitStatus = true
         } else {
-          alert(message)
+          this.showToast(message)
         }
       })
     }
