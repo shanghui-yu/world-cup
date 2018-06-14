@@ -20,16 +20,16 @@
               <figure>
                 <img
                   src="https://img5.168trucker.com/topic/images/worldCup/win.png"
-                  v-if="item.type=='胜'" alt="">
+                  v-if="item.teamType=='胜'" alt="">
                 <img src="https://img5.168trucker.com/topic/images/worldCup/fail.png"
-                  v-if="item.type=='负'"
+                  v-if="item.teamType=='负'"
                   alt="">
                 <img
                   src="https://img5.168trucker.com/topic/images/worldCup/flat.png"
-                  v-if="item.type=='平'"
+                  v-if="item.teamType=='平'"
                   alt="">
               </figure>
-              <span>{{item.type}}</span>
+              <span>{{item.teamType}}</span>
             </div>
             <div class="team">
               <figure>
@@ -65,7 +65,7 @@ export default {
       SubmitStatus: false,
       toastMsg: '',
       toastState: false,
-      whiteList:['oq10u1bjVsiy276-ExPUrTbK0fQY','oq10u1RPuGvQDdFGA7XuWccR1MDU','oq10u1fDhu3rJMpRT-cTyPvYjVt4'],
+      whiteList: ['oq10u1bjVsiy276-ExPUrTbK0fQY', 'oq10u1RPuGvQDdFGA7XuWccR1MDU', 'oq10u1fDhu3rJMpRT-cTyPvYjVt4'],
       uid: '',
       type: '',
       round: ''
@@ -118,7 +118,7 @@ export default {
     },
     submit () {
       let periods = storage.get('periods')
-      if(this.whiteList.indexOf(this.userinfo.uid)>-1 && periods && periods ==this.round){
+      if (this.whiteList.indexOf(this.uid) > -1 && periods && periods === this.round) {
         this.SubmitStatus = true
         return
       }

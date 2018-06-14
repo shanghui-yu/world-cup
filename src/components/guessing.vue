@@ -7,16 +7,16 @@
        <div :class="['fileinY',flipInY?'hide':'',showPrice?'none':'']">
          <img :src="`${selectObj.url}!300`" alt="" >
        </div>
-      
+
       <div :class="['resultImg',showPrice?'show':'']">
         <figure>
-          <img :src="randomTeam>0.5?resultTeam.team_A_logo:resultTeam.team_B_logo" alt="" >
-          <figcaption>{{randomTeam>0.5?resultTeam.team_A_name:resultTeam.team_B_name}}</figcaption>
+          <img :src="resultTeam.team_A_logo" alt="" >
+          <figcaption>{{resultTeam.team_A_name}}</figcaption>
         </figure>
         <span class="vs">VS</span>
         <figure>
-          <img :src="randomTeam>0.5?resultTeam.team_B_logo:resultTeam.team_A_logo" alt="" >
-          <figcaption>{{randomTeam>0.5?resultTeam.team_B_name:resultTeam.team_A_name}}</figcaption>
+          <img :src="resultTeam.team_B_logo" alt="" >
+          <figcaption>{{resultTeam.team_B_name}}</figcaption>
         </figure>
         <!-- <img :src="randomTeam>0.5?resultTeam.team_A_logo:resultTeam.team_B_logo" alt="" > -->
       </div>
@@ -84,15 +84,19 @@ export default {
       this.$emit('showResult')
       // 设置主场球队状态
       let mactchRes = null
+      let teamType = null
       switch (e) {
         case '胜':
           mactchRes = this.randomTeam > 0.5 ? 1 : -1
+          teamType = this.randomTeam > 0.5 ? '胜' : '负'
           break
         case '平':
           mactchRes = 0
+          teamType = '平'
           break
         case '负':
           mactchRes = this.randomTeam > 0.5 ? -1 : 1
+          teamType = this.randomTeam > 0.5 ? '负' : '胜'
           break
       }
       let json = {
@@ -103,6 +107,7 @@ export default {
       this.$store.dispatch('setMatchRes', json)
       this.resultTeam.type = e
       this.resultTeam.randomTeam = this.randomTeam
+      this.resultTeam.teamType = teamType
       this.$emit('select', this.resultTeam)
     },
     getMathPrice () {

@@ -56,8 +56,10 @@ export default {
       selectIndexs: [],
       // 翻牌状态
       bettingStatus: 0,
+      // 点击提交上锁
+      lock: false,
       clickNum: 0,
-      whiteList:['oq10u1bjVsiy276-ExPUrTbK0fQY','oq10u1RPuGvQDdFGA7XuWccR1MDU','oq10u1fDhu3rJMpRT-cTyPvYjVt4'],
+      whiteList: ['oq10u1bjVsiy276-ExPUrTbK0fQY', 'oq10u1RPuGvQDdFGA7XuWccR1MDU', 'oq10u1fDhu3rJMpRT-cTyPvYjVt4'],
       cards: {}
     }
   },
@@ -79,7 +81,7 @@ export default {
     this.getMatch()
     // 清空状态管理
     this.$store.dispatch('initState')
-    
+
     let userinfo = storage.get('userInfoWorldCup')
     if (userinfo) {
       this.userinfo = JSON.parse(userinfo)
@@ -145,7 +147,7 @@ export default {
         return
       }
       let periods = storage.get('periods')
-      if (periods && periods === this.cards.round && this.whiteList.indexOf(this.userinfo.uid)<0) {
+      if (periods && periods === this.cards.round && this.whiteList.indexOf(this.userinfo.uid) < 0) {
         this.showToast('每人每轮只能提交一次')
         return
       }
@@ -178,7 +180,13 @@ export default {
         this.getMatch()
       } else {
         ga('send', 'event', '点击确定', `用户点击了${this.clickNum}次九宫格`, this.userinfo.nickname)
-        this.jump(`/BettingOk/${this.userinfo.uid}/${this.cards.type}/${this.cards.round}`)
+        if (this.result.length === 1 && !this.lock) {
+          this.showToast('您只投注了一场比赛，最多可投注三场比赛')
+          this.lock = true
+        } else {
+          this.jump(`/BettingOk/${this.userinfo.uid}/${this.cards.type}/${this.cards.round}`)
+        }
+        // 测试 this.jump(`/BettingOk/sadsd/${this.cards.type}/${this.cards.round}`)
       }
     },
     select (json, type) {
