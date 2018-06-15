@@ -11,7 +11,7 @@
           <div class="card" @click="showResult(item,ind)" v-for="(item ,ind) in cards.imgs" :key="ind">
             <!-- 默认卡牌 -->
             <figure class="defalt"><img :src="`${item.url}!300`" alt=""></figure>
-            <div class="result" :total="items.type" v-for="items in result" v-if="items.index == ind" :key="items.id">
+            <div class="result" :total="items.type" v-for="items in selectObj" v-if="items.index == ind" :key="items.id">
               <figure><img :src="items.randomTeam>0.5?items.team_A_logo:items.team_B_logo" alt=""></figure>
             </div>
           </div>
@@ -60,7 +60,9 @@ export default {
       lock: false,
       clickNum: 0,
       whiteList: ['oq10u1bjVsiy276-ExPUrTbK0fQY', 'oq10u1RPuGvQDdFGA7XuWccR1MDU', 'oq10u1fDhu3rJMpRT-cTyPvYjVt4'],
-      cards: {}
+      cards: {},
+      // 设置选中球队
+      selectObj:[]
     }
   },
   components: {
@@ -79,17 +81,14 @@ export default {
     this.hideshare()
     this.share()
     this.getMatch()
-    // 清空状态管理
-    this.$store.dispatch('initState')
-
     let userinfo = storage.get('userInfoWorldCup')
     if (userinfo) {
       this.userinfo = JSON.parse(userinfo)
     }
-  },
-  mounted () {
     // 清空状态管理
     this.$store.dispatch('initState')
+  },
+  mounted () {
   },
   methods: {
     showRule () {
@@ -115,24 +114,27 @@ export default {
         let {status, data, message} = res.data
         if (!status) {
           this.cards = data
-          let teams = storage.get('teams')
-          if (teams) {
-            teams = JSON.parse(teams)
-            teams.forEach(element => {
-              if (element.round !== data.round) {
-                teams.push(data)
-                storage.set('teams', teams)
-              }
-            })
-          } else {
-            let team = []
-            team.push(data)
-            storage.set('teams', team)
-          }
+          // this.stroageTeams(data)
         } else {
           this.showToast(message)
         }
       })
+    },
+    stroageTeams(data){
+      let teams = storage.get('teams')
+      if (teams) {
+        teams = JSON.parse(teams)
+        teams.forEach(element => {
+          if (element.round !== data.round) {
+            teams.push(data)
+            storage.set('teams', teams)
+          }
+        })
+      } else {
+        let team = []
+        team.push(data)
+        storage.set('teams', team)
+      }
     },
     // 显示奖项
     /*
@@ -186,12 +188,19 @@ export default {
         } else {
           this.jump(`/BettingOk/${this.userinfo.uid}/${this.cards.type}/${this.cards.round}`)
         }
-        // 测试 this.jump(`/BettingOk/sadsd/${this.cards.type}/${this.cards.round}`)
+        // 测试
+        // this.jump(`/BettingOk/sadsd/${this.cards.type}/${this.cards.round}`)
       }
     },
     select (json, type) {
       // 设置翻牌的下标
       json.index = this.selectIndex
+      try {
+        storage.set('selectObj',json)
+      } catch (error) {
+        
+      }
+      this.selectObj.push(json)
       this.$store.dispatch('selectObjFun', json)
       if (!this.bettingStatus) {
         this.bettingStatus = 1

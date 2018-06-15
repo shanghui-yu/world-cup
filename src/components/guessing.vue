@@ -69,10 +69,12 @@ export default {
   mounted () {
     // 随机获取球队
     this.getMathPrice()
-    setTimeout(() => {
+    let time1 =  setTimeout(() => {
       this.flipInY = 1
-      setTimeout(() => {
+      time1 && clearTimeout(time1)
+      let time2 = setTimeout(() => {
         this.showPrice = 1
+        time2 && clearTimeout(time2)
       }, 500)
     }, 1500)
   },

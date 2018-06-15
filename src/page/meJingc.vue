@@ -84,9 +84,9 @@ export default {
     picing (data) {
       if (data && data.length) {
         data.forEach((element, index) => {
-          if(element.round==this.teams[index].round){
-            element.teams = this.teams[index].matchList
-          }
+          // if(element.round==this.teams[index].round){
+          //   element.teams = this.teams[index].matchList
+          // }
           element.day = this.rounds[element.round - 1]
           element.number = element.matchRes.filter((item) => {
             return item
