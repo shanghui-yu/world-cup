@@ -255,8 +255,11 @@ export default {
     .team-name{
       em{
         font-size: 30px;
+        color: #fff;
       }
       font-size: 40px;
+      color: #c00;
+      font-weight: bold;
     }
     .des{
       font-size: 28px;

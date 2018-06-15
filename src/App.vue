@@ -15,7 +15,7 @@ export default {
     getUserinfo () {
       let href = location.href
       if (!localStorage.getItem('userInfoWorldCup')) {
-        if (href.indexOf('openid') > -1) {
+        if (href.indexOf('openid') > -1 && href.indexOf('nickname')> -1 &&href.indexOf('headimgurl')> -1) {
           let json = {}
           json['uid'] = this.getQueryString('openid')
           json['nickname'] = this.getQueryString('nickname')
@@ -23,6 +23,11 @@ export default {
           localStorage.setItem('userInfoWorldCup', JSON.stringify(json))
           this.getUser(json['uid'])
         } else {
+          location.href = 'https://topic.vr0101.com/auth'
+        }
+      }else{
+        let user = JSON.parse(localStorage.getItem('userInfoWorldCup'))
+        if(!user.uid && !user.nickname && !user.headimgurl){
           location.href = 'https://topic.vr0101.com/auth'
         }
       }
