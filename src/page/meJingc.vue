@@ -13,7 +13,7 @@
           <div class="betting-box">
             <div class="header">
               投注方式：{{item.number.length}}串1
-              <div class="result" v-if="item.Integral">开奖结果：{{item.Integral}}</div>
+              <div class="result" v-if="item.integral!=null">开奖结果：{{item.integral}}</div>
             </div>
             <div class="footer">
               <div
