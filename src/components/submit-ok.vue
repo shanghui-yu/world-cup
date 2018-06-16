@@ -1,7 +1,8 @@
 <template>
 <div class="main">
   <div class="status">提交成功</div>
-  <div class="tips">请长按关注下方公众号，<br> 您将第一时间获得中奖消息</div>
+  <div class="tips">长按下方二维码</div>
+  <p class="important">关注公众号，您将在活动结束时获得官方送出的<strong>50</strong>积分，积分将计入排行榜</p>
   <figure class="code">
     <img src="https://img5.168trucker.com/topic/images/worldCup/code.png" alt="">
     <figcaption @click="toSubmit">直接去补全我的领奖信息</figcaption>
@@ -46,7 +47,7 @@ export default {
     &::before{
       content: '';
       background: url('https://img5.168trucker.com/topic/images/worldCup/submit-ok.png') no-repeat;
-      margin: 50px auto 20px;
+      margin: 20px auto 20px;
       width: 185px;
       height: 186px;
       display: block;
@@ -57,6 +58,21 @@ export default {
     line-height: 48px;
     color: #fff;
     text-align: center;
+  }
+  .important{
+    font-size: 30px;
+    color: #fff;
+    padding: 0 30px;
+    margin-top: 15px;
+    text-align: center;
+    letter-spacing: 0.8px;
+    strong{
+      font-size: 40px;
+      color: #fff948;
+      display: inline-block;
+      margin:0 10px;
+      animation:eye 1s infinite linear;
+    }
   }
   .code{
     img{

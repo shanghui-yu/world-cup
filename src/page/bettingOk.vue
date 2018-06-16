@@ -171,9 +171,6 @@ export default {
       flex-direction: column;
       flex: 1;
       width: 100%;
-      height: 100%;
-      padding-bottom: 30px;
-      box-sizing: border-box;
       .title{
         margin:24px auto;
       }
@@ -218,7 +215,7 @@ export default {
         }
       }
       .next{
-        margin: 20px auto 0px;
+        margin: 20px auto 30px;
          background: url('https://img5.168trucker.com/topic/images/worldCup/next.png') no-repeat;
          width: 320px;
          height: 96px;
