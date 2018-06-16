@@ -33,8 +33,10 @@ export default {
       }
     },
     getUser (uid) {
+      let time = +new Date()
       let json = {
-        uid: `${uid}`
+        uid: `${uid}`,
+        time
       }
       XHR.getUser(json).then((res) => {
         let {data, status} = res.data

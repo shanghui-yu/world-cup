@@ -50,7 +50,7 @@ export default {
       end: false,
       // 自己的用户信息
       myUserinfo: {},
-      page:0,
+      page: 0,
       uid: 'xiaohuids', // 用户openid
       list: []
     }
@@ -85,10 +85,12 @@ export default {
         return
       }
       this.loading = 1
+      let time = +new Date()
       let json = {
         page: this.page,
         uid: this.uid,
-        size: 20
+        size: 20,
+        time
       }
       XHR.getRank(json).then(res => {
         let {data, status, rankingInfo} = res.data

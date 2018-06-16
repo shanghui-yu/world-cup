@@ -71,8 +71,10 @@ export default {
   methods: {
     // 获取我的竞猜信息
     getMyJingCai () {
+      let time = +new Date()
       let json = {
-        uid: this.uid
+        uid: this.uid,
+        time
       }
       XHR.getMyJingCai(json).then(res => {
         let {status, data} = res.data
