@@ -17,7 +17,7 @@
             </div>
             <div class="footer">
               <div
-                :class="[ele=='0'?'fail':'',ele=='1'?'win':'',ele=='-1'?'flat':'']"
+                :class="[ele=='0'?'flat':'',ele=='1'?'win':'',ele=='-1'?'fail':'']"
                 v-if="ele" v-for="(ele,inx) in item.matchRes" :key="inx">
                 <figure>
                   <img :src="item.matchList[inx].team_A_logo" alt="">

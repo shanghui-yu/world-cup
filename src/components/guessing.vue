@@ -69,7 +69,7 @@ export default {
   mounted () {
     // 随机获取球队
     this.getMathPrice()
-    let time1 =  setTimeout(() => {
+    let time1 = setTimeout(() => {
       this.flipInY = 1
       time1 && clearTimeout(time1)
       let time2 = setTimeout(() => {
@@ -258,7 +258,7 @@ export default {
         color: #fff;
       }
       font-size: 40px;
-      color: #c00;
+      color: #f25b44;
       font-weight: bold;
     }
     .des{

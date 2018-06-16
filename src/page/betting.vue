@@ -62,7 +62,7 @@ export default {
       whiteList: ['oq10u1bjVsiy276-ExPUrTbK0fQY', 'oq10u1RPuGvQDdFGA7XuWccR1MDU', 'oq10u1fDhu3rJMpRT-cTyPvYjVt4'],
       cards: {},
       // 设置选中球队
-      selectObj:[]
+      selectObj: []
     }
   },
   components: {
@@ -120,7 +120,7 @@ export default {
         }
       })
     },
-    stroageTeams(data){
+    stroageTeams (data) {
       let teams = storage.get('teams')
       if (teams) {
         teams = JSON.parse(teams)
@@ -196,9 +196,9 @@ export default {
       // 设置翻牌的下标
       json.index = this.selectIndex
       try {
-        storage.set('selectObj',json)
+        storage.set('selectObj', json)
       } catch (error) {
-        
+
       }
       this.selectObj.push(json)
       this.$store.dispatch('selectObjFun', json)
