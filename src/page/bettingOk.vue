@@ -65,6 +65,7 @@ export default {
       SubmitStatus: false,
       toastMsg: '',
       toastState: false,
+      lock: false,
       whiteList: ['oq10u1bjVsiy276-ExPUrTbK0fQY', 'oq10u1RPuGvQDdFGA7XuWccR1MDU', 'oq10u1fDhu3rJMpRT-cTyPvYjVt4'],
       uid: '',
       type: '',
@@ -122,12 +123,17 @@ export default {
         this.SubmitStatus = true
         return
       }
+      if (this.lock) {
+        return
+      }
+      this.lock = true
       let json = {
         uid: this.uid,
         type: this.type,
         matchRes: this.MatchRes.join(',')
       }
       XHR.postMyJingCai(json).then(res => {
+        this.lock = false
         let {status, message} = res.data
         if (!status) {
           this.checkIsperiods()
