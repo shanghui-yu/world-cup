@@ -61,7 +61,6 @@ export default {
     } else {
       this.setCookie('sourceNumber', this.sourceNumber)
     }
-    console.log(this.sourceNumber)
     if (storage.get('userInfoWorldCup')) {
       this.user = JSON.parse(storage.get('userInfoWorldCup'))
     }

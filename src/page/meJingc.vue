@@ -21,6 +21,7 @@
                 v-if="ele" v-for="(ele,inx) in item.matchRes" :key="inx">
                 <figure>
                   <img :src="item.matchList[inx].team_A_logo" alt="">
+                  <figcaption>{{item.matchList[inx].team_A_name}}</figcaption>
                 </figure>
               </div>
             </div>
@@ -202,23 +203,31 @@ export default {
             float: left;
             height: 100%;
             figure{
-              width: 90px;
-              height: 90px;
-              border:2px solid #fff;
-              border-radius: 50%;
+              width: 115px;
               overflow: hidden;
               margin-left: 25px;
+              text-align: center;
               img{
-                width: 100%;
-                height: 100%;
+                width: 80px;
+                height: 80px;
+                border:2px solid #fff;
+                border-radius: 50%;
                 object-fit: cover;
+              }
+              figcaption{
+                font-size: 22px;
+                color: #3e3a3a;
+                overflow: hidden;
+                line-height: 24px;
+                text-align: center;
+                margin-top: 15px;
               }
             }
             &::after{
               content: '';
               position: absolute;
-              z-index: -1;
-              bottom: 8px;
+              z-index: 5;
+              bottom: 35px;
               left: 90px;
               width: 74px;
               height: 74px;

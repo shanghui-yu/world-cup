@@ -6,28 +6,39 @@
 
 <script>
 import XHR from './api'
+import storage from './store/storage'
 export default {
   name: 'App',
   created () {
+    this.alginAuth()
     this.getUserinfo()
   },
   methods: {
+    alginAuth () {
+      let user = storage.get('userInfoWorldCup')
+      let againAuth = storage.get('againAuth')
+      if (user && !againAuth) {
+        storage.remove('userInfoWorldCup')
+        storage.set('againAuth', '1')
+      }
+    },
     getUserinfo () {
       let href = location.href
-      if (!localStorage.getItem('userInfoWorldCup')) {
+      if (!storage.get('userInfoWorldCup')) {
         if (href.indexOf('openid') > -1 && href.indexOf('nickname') > -1 && href.indexOf('headimgurl') > -1) {
           let json = {}
           json['uid'] = this.getQueryString('openid')
           json['nickname'] = this.getQueryString('nickname')
           json['headimgurl'] = this.getQueryString('headimgurl')
-          localStorage.setItem('userInfoWorldCup', JSON.stringify(json))
+          storage.set('userInfoWorldCup', JSON.stringify(json))
           this.getUser(json['uid'])
         } else {
           location.href = 'https://topic.vr0101.com/auth'
         }
       } else {
-        let user = JSON.parse(localStorage.getItem('userInfoWorldCup'))
+        let user = JSON.parse(storage.get('userInfoWorldCup'))
         if (!user.uid && !user.nickname && !user.headimgurl) {
+          console.log(36)
           location.href = 'https://topic.vr0101.com/auth'
         }
       }
@@ -41,7 +52,7 @@ export default {
       XHR.getUser(json).then((res) => {
         let {data, status} = res.data
         if (!status) {
-          localStorage.setItem('userInfoWorldCup', JSON.stringify(data))
+          storage.set('userInfoWorldCup', JSON.stringify(data))
         }
       })
     }

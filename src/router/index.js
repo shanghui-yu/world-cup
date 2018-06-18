@@ -6,6 +6,7 @@ import Rank from '../page/rank.vue'
 import MeJingc from '../page/meJingc.vue'
 import BettingOk from '../page/bettingOk.vue'
 import Betting from '../page/betting.vue'
+import Turntable from '../page/turntable.vue'
 
 import Submit from '../page/submit.vue'
 
@@ -33,6 +34,11 @@ export default new Router({
       path: '/Betting',
       name: 'Betting',
       component: Betting
+    },
+    {
+      path: '/Turntable',
+      name: 'Turntable',
+      component: Turntable
     },
     {
       path: '/BettingOk/:uid/:type/:round',
