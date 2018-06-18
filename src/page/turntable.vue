@@ -1,6 +1,9 @@
 <template>
   <div class="waaper">
     <img src="https://img5.168trucker.com/topic/images/worldCup/login.png" alt="" class="log">
+    <ul class="">
+      <li></li>
+    </ul>
     <h2 :class="['title',smailView?'smail-title':'']"></h2>
     <turntableLock :smailView="smailView" @luck="luck"></turntableLock>
     <footer>
