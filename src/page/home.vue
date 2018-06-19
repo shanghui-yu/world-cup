@@ -21,6 +21,7 @@
 import Rule from '../components/rule'
 import priceRule from '../components/price-rule.vue'
 import storage from '../store/storage.js'
+import XHR from '../api'
 export default {
   data () {
     return {
@@ -42,6 +43,7 @@ export default {
     this.getWxconfig()
     this.hideshare()
     this.share()
+    
     if (window.innerHeight < 1182) {
       this.mtop = '115px'
       this.top = '445px'
@@ -64,6 +66,9 @@ export default {
     if (storage.get('userInfoWorldCup')) {
       this.user = JSON.parse(storage.get('userInfoWorldCup'))
     }
+    // 访问我的竞猜数据
+    this.getMyJingCai()
+    
   },
   mounted () {
 
@@ -84,7 +89,15 @@ export default {
     toPrece () {
       ga('send', 'event', '点击我的竞猜', this.sourceNumber, this.user.nickname)
       this.jump('/MeJingc')
-    }
+    },
+    getMyJingCai () {
+      let time = +new Date()
+      let json = {
+        uid: this.user.uid,
+        time
+      }
+      XHR.getMyJingCai(json).then(res => {})
+    },
   }
 }
 </script>
