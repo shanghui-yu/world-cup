@@ -26,7 +26,7 @@
             <img src="https://img5.168trucker.com/topic/images/worldCup/price3.png" alt="">
           </figure>
            <h5>三等奖：共10名</h5>
-           <span class="des">取积分榜10-19名<br>奔驰车载蓝牙音箱</span>
+           <span class="des">取积分榜9-18名<br>奔驰车载蓝牙音箱</span>
         </div>
       </div>
       <div class="price last">
