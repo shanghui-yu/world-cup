@@ -19,7 +19,7 @@
             <img src="https://img5.168trucker.com/topic/images/worldCup/price2.png" alt="">
           </figure>
           <h5>二等奖：共5名</h5>
-          <span class="des">取积分榜4-9名<br>锤子新一代智能手机</span>
+          <span class="des">取积分榜4-8名<br>锤子新一代智能手机</span>
         </div>
         <div class="price">
           <figure>
