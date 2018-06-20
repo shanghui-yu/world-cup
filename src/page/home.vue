@@ -43,7 +43,7 @@ export default {
     this.getWxconfig()
     this.hideshare()
     this.share()
-    
+
     if (window.innerHeight < 1182) {
       this.mtop = '115px'
       this.top = '445px'
@@ -68,7 +68,6 @@ export default {
     }
     // 访问我的竞猜数据
     this.getMyJingCai()
-    
   },
   mounted () {
 
@@ -88,7 +87,7 @@ export default {
     },
     toPrece () {
       ga('send', 'event', '点击我的竞猜', this.sourceNumber, this.user.nickname)
-      this.jump('/MeJingc')
+      this.jump(`/MeJingc/${this.user.uid}`)
     },
     getMyJingCai () {
       let time = +new Date()
@@ -97,7 +96,7 @@ export default {
         time
       }
       XHR.getMyJingCai(json).then(res => {})
-    },
+    }
   }
 }
 </script>

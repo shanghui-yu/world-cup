@@ -26,7 +26,7 @@ export default new Router({
     },
 
     {
-      path: '/MeJingc',
+      path: '/MeJingc/:uid/',
       name: 'MeJingc',
       component: MeJingc
     },

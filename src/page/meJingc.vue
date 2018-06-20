@@ -58,7 +58,8 @@ export default {
     priceRule
   },
   created () {
-    this.uid = this.getUid()
+    // this.uid = this.getUid()
+    this.uid = this.$route.params.uid
     this.getWxconfig()
     this.hideshare()
     this.share()

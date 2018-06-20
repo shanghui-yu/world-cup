@@ -14,9 +14,11 @@
       </div>
       <ul class="rank-box" @scroll="scrollMore">
         <li v-for="(item,index) in list" :key="index">
-          <span class="one">{{index+1}}</span>
-          <span>{{item.nickname?item.nickname:'e族卡友'}}</span>
-          <span>{{item.total}}</span>
+          <a :href="`#/MeJingc/${item.uid}`">
+            <span class="one">{{index+1}}</span>
+            <span>{{item.nickname?item.nickname:'e族卡友'}}</span>
+            <span>{{item.total}}</span>
+          </a>
         </li>
         <li class="loading" v-if="list.length && !end">正在加载中</li>
         <li class="end" v-if="list.length && end">已经到底了</li>
@@ -147,6 +149,9 @@ export default {
       width: 594px;
       margin:0 auto;
       display: flex;
+      a{
+         display: flex;
+      }
       span{
         display: inline-block;
         text-align: center;
