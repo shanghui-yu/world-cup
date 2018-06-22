@@ -10,7 +10,8 @@
       <div class="table">
           <div class="card" @click="showResult(item,ind)" v-for="(item ,ind) in cards.imgs" :key="ind">
             <!-- 默认卡牌 -->
-            <figure class="defalt"><img :src="`${item.url}!300`" alt=""></figure>
+            <figure :class="['defalt',item.level?`level${item.level}`:'']"><img :src="`${item.url}!300`" alt=""></figure>
+
             <div class="result" :total="items.type" v-for="items in selectObj" v-if="items.index == ind" :key="items.id">
               <figure><img :src="items.randomTeam>0.5?items.team_A_logo:items.team_B_logo" alt=""></figure>
             </div>
@@ -273,19 +274,46 @@ export default {
           margin-right: 201px;
         }
         figure{
-          border-radius: 50%;
-          margin:30px auto;
-          overflow: hidden;
+          margin:10px auto;
+          position: relative;
+          z-index: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           img{
-            width: 100%;
-            height: 100%;
+            border-radius: 50%;
+            width: 138px;
+            height: 138px;
+            border:2px solid #b18438;
             object-fit: cover;
           }
         }
         .defalt{
-          width: 138px;
-          height: 138px;
-          border:2px solid #b18438;
+          width: 180px;
+          height: 180px;
+          &::before{
+            content: '';
+            display: block;
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            z-index: -1;
+            top: 0px;
+            left:0px;
+            animation:cicle 5s infinite linear;
+          }
+          &.level1:before{
+            background: url('https://img5.168trucker.com/topic/images/worldCup/level1.png') 50% 50%;
+            background-size: cover;
+          }
+          &.level2:before{
+            background: url('https://img5.168trucker.com/topic/images/worldCup/level2.png') 50% 50%;
+            background-size: cover;
+          }
+          &.level3:before{
+            background: url('https://img5.168trucker.com/topic/images/worldCup/level3.png') 50% 50%;
+            background-size: cover;
+          }
         }
         .result{
           position: absolute;
@@ -301,8 +329,14 @@ export default {
             position: absolute;
             left: 38px;
             top:2px;
-            background: #fff;
-            border:2px solid #fff;
+            img{
+              border:2px solid #fff;
+              margin-top: 30px;
+              width: 96px;
+              height: 96px;
+               border:2px solid #fff;
+               border-radius: 50%;
+            }
           }
           &:after{
             position: absolute;

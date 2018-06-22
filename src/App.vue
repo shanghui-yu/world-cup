@@ -38,7 +38,6 @@ export default {
       } else {
         let user = JSON.parse(storage.get('userInfoWorldCup'))
         if (!user.uid && !user.nickname && !user.headimgurl) {
-          console.log(36)
           location.href = 'https://topic.vr0101.com/auth'
         }
       }
