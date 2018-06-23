@@ -300,7 +300,13 @@ export default {
             z-index: -1;
             top: 0px;
             left:0px;
-            animation:cicle 5s infinite linear;
+            /*! autoprefixer: off */
+               -webkit-backface-visibility: hidden;
+                -webkit-transform-style: preserve-3d;
+            /* autoprefixer: on */
+            animation:cicle 5s linear infinite;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
           }
           &.level1:before{
             background: url('https://img5.168trucker.com/topic/images/worldCup/level1.png') 50% 50%;
