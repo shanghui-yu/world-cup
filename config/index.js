@@ -11,8 +11,15 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
-
+    proxyTable: {
+      '/bx': {
+        target: 'https://topic.vr0101.com', // 你的目标域名
+        changeOrigin: true,
+        pathRewrite: {
+          '^/bx': 'https://topic.vr0101.com'
+        }
+      }
+    },
     // Various Dev Server settings
     host: ip, // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
