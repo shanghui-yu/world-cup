@@ -1,11 +1,33 @@
 <template>
   <div class="waaper">
     <img src="https://img5.168trucker.com/topic/images/worldCup/login.png" alt="" class="log">
-    <ul class="">
-      <li></li>
-    </ul>
+    <div class="win-user">
+      <ul>
+        <li>恭喜<span>xxx</span>获得<span>xxx</span></li>
+        <li>恭喜<span>xxx</span>获得<span>xxx</span></li>
+        <li>恭喜<span>xxx</span>获得<span>xxx</span></li>
+        <li>恭喜<span>xxx</span>获得<span>xxx</span></li>
+        <li>恭喜<span>xxx</span>获得<span>xxx</span></li>
+        <li>恭喜<span>xxx</span>获得<span>xxx</span></li>
+        <li>恭喜<span>xxx</span>获得<span>xxx</span></li>
+      </ul>
+      <ul>
+        <li>恭喜<span>xxx</span>获得<span>xxx</span></li>
+        <li>恭喜<span>xxx</span>获得<span>xxx</span></li>
+        <li>恭喜<span>xxx</span>获得<span>xxx</span></li>
+        <li>恭喜<span>xxx</span>获得<span>xxx</span></li>
+        <li>恭喜<span>xxx</span>获得<span>xxx</span></li>
+        <li>恭喜<span>xxx</span>获得<span>xxx</span></li>
+        <li>恭喜<span>xxx</span>获得<span>xxx</span></li>
+      </ul>
+    </div>
     <h2 :class="['title',smailView?'smail-title':'']"></h2>
-    <turntableLock :smailView="smailView" @luck="luck"></turntableLock>
+    <turntableLock
+      :smailView="smailView"
+      :level="level"
+      :begin="begin"
+      @luck="luck">
+    </turntableLock>
     <footer>
       <p class="tip">你有可能中华为手机哦~</p>
       <div class="me">
@@ -31,7 +53,8 @@ export default {
     return {
       smailView: false,
       toggletoaseStatus: false,
-      level: 5
+      level: 0,
+      begin: 0
     }
   },
   components: {
@@ -59,7 +82,12 @@ export default {
       this.toggletoaseStatus = !this.toggletoaseStatus
     },
     luck () {
-      this.toggletoase()
+      this.begin = 1
+      setTimeout(() => {
+        this.begin = 2
+        this.toggletoase()
+      }, 3e3)
+      // this.toggletoase()
     }
   }
 }
@@ -71,7 +99,7 @@ export default {
     width: 100%;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    background: url('../assets/truntable-bg.jpg') 50% 50% no-repeat;
+    background: url('https://img5.168trucker.com/topic/images/worldCup/truntable-bg.jpg') 50% 50% no-repeat;
     background-size: cover;
     position: relative;
     display: flex;
@@ -80,7 +108,7 @@ export default {
     .title{
       width: 430px;
       height: 163px;
-      background: url('../assets/turntable.png') 50% 50% no-repeat;
+      background: url('https://img5.168trucker.com/topic/images/worldCup/turntable.png') 50% 50% no-repeat;
       background-size: contain;
       margin: 50px auto 15px;
       &.smail-title{
@@ -91,6 +119,39 @@ export default {
       width: 169px;
       height: 60px;
       margin:40px 0 0 40px;
+    }
+    .win-user{
+      position: absolute;
+      top: 46px;
+      width: 100%;
+      height: 46px;
+      overflow-x: scroll;
+      ul{
+        width: 10000%;
+        &:first-child{
+          li:first-child{
+            margin-left: 315px;
+          }
+        }
+      }
+      li{
+        border-style: solid;
+        border-width: 3px;
+        border-color: rgb(252, 255, 0);
+        background-color: rgba(95, 189, 0, 0.502);
+        height: 40px;
+        border-radius: 20px;
+        padding: 0 13px;
+        font-size: 24px;
+        color: #fff;
+        margin-right: 38px;
+        float: left;
+        span{
+          color: #fcff00;
+          margin:0 10px;
+          display: inline-block;
+        }
+      }
     }
     footer{
       position: fixed;

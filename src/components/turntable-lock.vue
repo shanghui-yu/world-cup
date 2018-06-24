@@ -1,6 +1,6 @@
 <template>
 <div :class="['lucky-truntable',smailView?'smail-truntable':'']">
-    <div class="lucky-plate">
+    <div :class="['lucky-plate', begin==1?`level${level}`:'', begin==2?`level${level}-restore no-trs`:'']">
     </div>
     <span class="pointer" @click="luck">抽奖</span>
 </div>
@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  props: ['smailView'],
+  props: ['smailView', 'level', 'begin'],
   data () {
     return {
     }
@@ -34,7 +34,7 @@ export default {
   .lucky-plate{
     width: 100%;
     height: 100%;
-    background: url('../assets/lucky-plate.png') no-repeat;
+    background: url('https://img5.168trucker.com/topic/images/worldCup/lucky-plate.png') no-repeat;
     background-size: cover;
     transition: -webkit-transform 3s ease-in-out;
     transition: transform 3s ease-in-out;
@@ -66,7 +66,7 @@ export default {
   }
   .pointer{
     position: absolute;
-    background: url('../assets/pointer.png') no-repeat;
+    background: url('https://img5.168trucker.com/topic/images/worldCup/pointer.png') no-repeat;
     width: 394px;
     height: 394px;
     left: 50%;

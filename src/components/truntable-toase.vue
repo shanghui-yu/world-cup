@@ -57,14 +57,14 @@ export default {
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     text-align: center;
-    background: url('../assets/turntable-all.png') no-repeat;
+    background: url('https://img5.168trucker.com/topic/images/worldCup/turntable-all.png') no-repeat;
     background-position:-2px -571px;
     text-align: center;
     &::before{
       content: '';
       width: 424px;
       height: 107px;
-      background: url('../assets/turntable-all.png') no-repeat;
+      background: url('https://img5.168trucker.com/topic/images/worldCup/turntable-all.png') no-repeat;
       background-position:-4px -4px;
       margin: -50px auto 0;
       display: block;
@@ -93,47 +93,47 @@ export default {
       font-weight: bold;
       display: inline-flex;
       justify-content: center;
-      background: url('../assets/field.png') no-repeat;
+      background: url('https://img5.168trucker.com/topic/images/worldCup/field.png') no-repeat;
     }
     &.level0{
       &:before{
-        background: url('../assets/turntable-all.png') no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/turntable-all.png') no-repeat;
         background-position:-4px -187px;
       }
       .img{
         width: 141px;
         height: 50px;
         margin:45px auto 50px;
-        background: url('../assets/thanks.png') no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/thanks.png') no-repeat;
       }
     }
      &.level1{
       .img{
-        background: url('../assets/turntable-all.png') no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/turntable-all.png') no-repeat;
         background-position:-220px -450px;
       }
     }
     &.level2{
       .img{
-        background: url('../assets/turntable-all.png') no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/turntable-all.png') no-repeat;
         background-position:-4px -450px;
       }
     }
     &.level3{
       .img{
-        background: url('../assets/turntable-all.png') no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/turntable-all.png') no-repeat;
         background-position:-3px -328px;
       }
     }
     &.level4{
       .img{
-        background: url('../assets/turntable-all.png') no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/turntable-all.png') no-repeat;
         background-position:-232px -328px;
       }
     }
     &.level5{
       .img{
-        background: url('../assets/turntable-all.png') no-repeat;
+        background: url('https://img5.168trucker.com/topic/images/worldCup/turntable-all.png') no-repeat;
         background-position:-467px -328px;
       }
     }
