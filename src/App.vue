@@ -33,12 +33,12 @@ export default {
           storage.set('userInfoWorldCup', JSON.stringify(json))
           this.getUser(json['uid'])
         } else {
-          location.href = 'https://topic.vr0101.com/auth'
+          // location.href = 'https://topic.vr0101.com/auth'
         }
       } else {
         let user = JSON.parse(storage.get('userInfoWorldCup'))
         if (!user.uid && !user.nickname && !user.headimgurl) {
-          location.href = 'https://topic.vr0101.com/auth'
+          // location.href = 'https://topic.vr0101.com/auth'
         }
       }
     },

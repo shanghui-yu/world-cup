@@ -20,6 +20,7 @@
       </div>
     </header>
     <!-- 翻牌结果 -->
+    <!-- 正式比赛 -->
     <Guessing
       v-if="showResultStatus"
       :selectObj="selectimg"
@@ -27,6 +28,14 @@
       @showResult="showResult"
       @select="select">
     </Guessing>
+    <!-- 淘汰赛 -->
+    <eliminate  v-if="showEliminateResult"
+      :selectObj="selectimg"
+      :matchList="cards.matchList"
+      @showEliminate="showEliminate"
+      @select="select">
+
+    </eliminate>
     <toast :msg="toastMsg" v-if="toastState"></toast>
     <Rule v-show="showRuleStatus" @showRule="showRule"></Rule>
     <priceRule v-show="showPriceRuleStatus" @showPriceRule="showPriceRule"></priceRule>
@@ -38,12 +47,14 @@ import Rule from '../components/rule'
 import storage from '../store/storage.js'
 import priceRule from '../components/price-rule.vue'
 import Guessing from '../components/guessing.vue'
+import eliminate from '../components/eliminate.vue'
 import XHR from '../api'
 import toast from '../components/toast'
 export default {
   data () {
     return {
       showResultStatus: false,
+      showEliminateResult: false, // 显示淘汰赛弹窗
       showRuleStatus: false,
       showPriceRuleStatus: false,
       toastMsg: '',
@@ -70,6 +81,7 @@ export default {
     Rule,
     priceRule,
     toast,
+    eliminate,
     Guessing
   },
   computed: {
@@ -143,6 +155,12 @@ export default {
       翻牌以后设置当前选择的图片
     */
     showResult (item, index) {
+      //  如果是淘汰赛走下面的方法
+      if (this.cards.type === 1) {
+        this.showEliminate(item, index)
+        return
+      }
+      //  如果是正常比赛走下面
       if (item === '取消') {
         this.showResultStatus = !this.showResultStatus
         let index = this.selectIndexs.indexOf(this.selectIndex)
@@ -175,7 +193,55 @@ export default {
         this.selectimg = item
       }
     },
-
+    showEliminate (item, index) {
+      let closeNum = this.getCookie('closeNum') ? this.getCookie('closeNum') : 0
+      let Eliminate = this.getCookie('Eliminate')
+      if (Eliminate) {
+        this.showToast('今天已翻牌并提交，请明天再来')
+      }
+      if (item === '取消') { // 执行关闭做的操作
+        closeNum++
+        this.setCookie('closeNum', closeNum)
+        if (closeNum === 3) {
+          this.showToast('每天仅有三次翻牌机会哦，您已经翻牌两次了')
+          return
+        }
+        this.showEliminateResult = !this.showEliminateResult
+        let index = this.selectIndexs.indexOf(this.selectIndex)
+        this.selectIndexs.splice(index, 1)
+        return
+      }
+      if (closeNum > 3) { // 今天翻牌次数用完
+        console.log(closeNum)
+        this.showToast('今天翻牌机会已用完')
+        return
+      }
+      let periods = storage.get('periods')
+      if (periods && periods === this.cards.round && this.whiteList.indexOf(this.userinfo.uid) < 0) {
+        this.showToast('每人每轮只能提交一次')
+        return
+      }
+      if (this.result.length > 2) {
+        this.showToast('每人每轮只能选择三次')
+        return
+      }
+      if (index) {
+        if (this.selectIndexs.indexOf(index) > -1) {
+          return
+        }
+        this.selectIndex = index
+        this.selectIndexs.push(index)
+        if (!this.clickNum) {
+          this.clickNum = 1
+        } else {
+          this.clickNum++
+        }
+      }
+      this.showEliminateResult = !this.showEliminateResult
+      if (item) {
+        this.selectimg = item
+      }
+    },
     // 洗牌或提交
     again () {
       if (!this.bettingStatus) {
