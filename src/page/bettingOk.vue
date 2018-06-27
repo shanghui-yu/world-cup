@@ -201,7 +201,7 @@ export default {
 
       XHR.postMyJingCai(json).then(res => {
         this.lock = false
-        this.setCookie('isFlop', 1) // 设置抢购过
+        this.setCookie('isFlop', 1) // 设置是否翻过牌
         let {status, message, isSlow} = res.data
         if (!status) {
           this.checkIsperiods()
