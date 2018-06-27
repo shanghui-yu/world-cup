@@ -10,36 +10,17 @@
 
       <div :class="['resultImg',showPrice?'show':'']">
         <figure>
-          <img :src="resultTeam.team_A_logo" alt="" >
-          <figcaption>{{resultTeam.team_A_name}}</figcaption>
+          <img :src="`https://img5.168trucker.com${integralShoper.img}`" alt="" >
         </figure>
-        <span class="vs">VS</span>
-        <figure>
-          <img :src="resultTeam.team_B_logo" alt="" >
-          <figcaption>{{resultTeam.team_B_name}}</figcaption>
-        </figure>
-        <!-- <img :src="randomTeam>0.5?resultTeam.team_A_logo:resultTeam.team_B_logo" alt="" > -->
       </div>
     </div>
-    <!-- title -->
-     <span class="name" v-if="!showPrice">{{selectObj.factory}}</span>
-     <span class="team-name" v-else><em>押注球队：</em>{{randomTeam>0.5?resultTeam.team_A_name:resultTeam.team_B_name}}队</span>
-
-     <span class="des">{{selectObj.desc}}</span>
+    <span class="name" v-if="!showPrice">夺取中....</span>
+    <span class="des" v-if="!showPrice">幸运女神降临，您将有机会直接获得礼品或积分</span>
+    <span class="name" v-if="showPrice">{{cards.integral}}积分</span>
+    <span class="des" v-if="showPrice">恭喜您中奖了，{{integralShoper.name}}送您{{cards.integral}}积分</span>
    </div>
-   <div :class="['footer',showPrice?'show':'']">
-     <p class="tip">请选择您的竞猜胜负</p>
-     <div class="betting">
-       <div class="win" @click="select('胜')">
-         <figure><img src="https://img5.168trucker.com/topic/images/worldCup/win.png" alt=""></figure>
-       </div>
-       <div class="flat" @click="select('平')">
-         <figure><img src="https://img5.168trucker.com/topic/images/worldCup/flat.png" alt=""></figure>
-      </div>
-       <div class="fail" @click="select('负')">
-         <figure><img src="https://img5.168trucker.com/topic/images/worldCup/fail.png" alt=""></figure>
-      </div>
-     </div>
+    <div :class="['footer',showPrice?'show':'']">
+     <button class="submit" @click="submit">确定</button>
    </div>
   </div>
 </transition>
@@ -47,28 +28,72 @@
 
 <script>
 export default {
-  props: ['selectObj', 'matchList', 'cards'],
+  props: ['selectObj', 'cards'],
   data () {
     return {
       // 翻牌
       flipInY: 0,
       // 显示结果
       showPrice: 0,
-      resultTeam: {},
-      selectIndex: null,
-      randomTeam: 0
+      integralShoper: {
+        img: '',
+        name: ''
+      },
+      imgs10: [
+        {
+          img: '/brand_logos/10/1.png',
+          name: '福田瑞沃'
+        },
+        {
+          img: '/brand_logos/10/2.png',
+          name: '福田时代'
+        }
+      ],
+      imgs5: [
+        {
+          img: '/brand_logos/5/1.png',
+          name: '东风商用车'
+        },
+        {
+          img: '/brand_logos/5/2.png',
+          name: '联合卡车'
+        },
+        {
+          img: '/brand_logos/5/3.png',
+          name: '上汽跃进'
+        }
+      ],
+      imgs3: [
+        {
+          img: '/brand_logos/3/1.png',
+          name: '福田戴姆勒'
+        },
+        {
+          img: '/brand_logos/3/2.png',
+          name: '奔驰卡车'
+        },
+        {
+          img: '/brand_logos/3/3.png',
+          name: '飞碟汽车'
+        },
+        {
+          img: '/brand_logos/3/4.png',
+          name: '一汽解放'
+        },
+        {
+          img: '/brand_logos/3/5.png',
+          name: '广汽日野'
+        }
+      ]
     }
   },
   computed: {
     indexs () { return this.$store.state.indexs }
   },
   created () {
-    this.randomTeam = Math.random()
-    console.log(this.indexs, 666)
+    this.random()
   },
   mounted () {
-    // 随机获取球队
-    this.getMathPrice()
     let time1 = setTimeout(() => {
       this.flipInY = 1
       time1 && clearTimeout(time1)
@@ -82,47 +107,29 @@ export default {
     showEliminate () {
       this.$emit('showEliminate', '取消')
     },
-    select (e) {
-      this.$emit('showEliminate')
-      // 设置主场球队状态
-      let mactchRes = null
-      let teamType = null
-      switch (e) {
-        case '胜':
-          mactchRes = this.randomTeam > 0.5 ? 1 : -1
-          teamType = this.randomTeam > 0.5 ? '胜' : '负'
-          break
-        case '平':
-          mactchRes = 0
-          teamType = '平'
-          break
-        case '负':
-          mactchRes = this.randomTeam > 0.5 ? -1 : 1
-          teamType = this.randomTeam > 0.5 ? '负' : '胜'
-          break
-      }
-      let json = {
-        index: this.selectIndex,
-        val: mactchRes
-      }
-      this.$store.dispatch('setSelectIndex', this.selectIndex)
-      this.$store.dispatch('setMatchRes', json)
-      this.resultTeam.type = e
-      this.resultTeam.randomTeam = this.randomTeam
-      this.resultTeam.teamType = teamType
-      this.$emit('select', this.resultTeam)
+    submit (e) {
+      this.$emit('submit', this.integralShoper)
     },
-    getMathPrice () {
-      let times = setTimeout(() => {
-        let n = Math.floor(Math.random() * this.matchList.length + 1) - 1
-        if (this.indexs.indexOf(n) < 0) {
-          this.selectIndex = n
-          this.resultTeam = this.matchList[this.selectIndex]
-          times && clearTimeout(times)
-        } else {
-          this.getMathPrice()
-        }
-      }, 100)
+    random () {
+      switch (this.cards.integral) {
+        case 20:
+          this.integralShoper = {img: '/brand_logos/20/1.png', name: '江淮格尔发'}
+          break
+        case 10:
+          let in10 = this.fRandomBy(0, 1)
+          this.integralShoper = this.imgs10[in10]
+          break
+        case 5:
+          let index = this.fRandomBy(0, 2)
+          this.integralShoper = this.imgs5[index]
+          break
+        case 3:
+          let i = this.fRandomBy(0, 4)
+          this.integralShoper = this.imgs3[i]
+          break
+        default:
+          break
+      }
     }
   }
 }
@@ -171,7 +178,7 @@ export default {
     color: #fff;
     margin-top: 225px;
     .img-box{
-      width: 400px;
+      width: 320px;
       height: 320px;
       margin:54px auto 30px;
       text-align: center;
@@ -186,120 +193,79 @@ export default {
       }
       .resultImg{
         display: inline-block;
-        // width: 0;
-        // opacity: 0;
         transform: translate3d(0,0,0);
         transform: scaleX(0);
         transition: all 0.5s ease;
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 400px;
+        width: 320px;
         height: 320px;
         overflow: hidden;
         figure{
-          width: 140px;
+          width: 320px;
           overflow: hidden;
           height: 100%;
           display: flex;
           flex-direction: column;
           justify-content: center;
           img{
-            width: 140px;
-            height: 140px;
+            width: 320px;
+            height: 320px;
             border:1px solid #fff;
             border-radius: 50%;
             overflow: hidden;
-            margin-top: 20px;
           }
-          figcaption{
-            margin-top: 30px;
-            font-weight: bold;
-            font-size: 28px;
-            overflow: hidden;
-            color: #fff;
-          }
-        }
-        span{
-          display: block;
-          flex:1;
-          font-size: 50px;
-          letter-spacing: 3px;
-          margin-top: -50px;
         }
         &.show{
-          // width: 100%;
           transform: scaleX(1);
-          // opacity: 1;
         }
       }
       .fileinY{
-        // width: 100%;
         transform: scaleX(1);
         transition: all 0.5s ease;
         &.hide{
           transform: scaleX(0);
-          // width: 0;
         }
         &.none{
           display: none;
         }
       }
     }
-    .name,.team-name{
+    .name{
       font-size: 44px;
       line-height: 68px;
       margin-bottom: 7px;
       font-weight: bold;
     }
-    .team-name{
-      em{
-        font-size: 30px;
-        color: #fff;
-      }
-      font-size: 40px;
-      color: #f25b44;
-      font-weight: bold;
-    }
     .des{
-      font-size: 28px;
+      font-size: 30px;
       line-height: 36px;
       width: 330px;
       margin:0 auto;
-      color: #fff948;
+      color: #fff;
     }
   }
   .footer{
     width: 594px;
     text-align: center;
-    transform: translate3d(0,200%,0);
+    transform: translate3d(0,400%,0);
     transition: all 0.5s ease;
     &.show{
       transform: translate3d(0,0,0);
     }
-    .tip{
-      font-size: 30px;
-      line-height: 36px;
-      color: #fff;
+    .submit{
       margin:55px auto 30px;
-    }
-    .betting{
-      display: flex;
-      >div{
-        display: flex;
-        flex: 1;
-        align-content: center;
-        figure{
-          width: 145px;
-          height: 145px;
-        }
-      }
-      .flat{
-        justify-content: center;
-      }
-      .fail{
-        justify-content: flex-end;
-      }
+      width: 350px;
+      height: 88px;
+      text-align: center;
+      color: rgb(255, 249, 72);
+      text-shadow: 0px 1px 0px rgba(55, 115, 32, 0.75);
+      font-size: 48px;
+      font-weight: bold;
+      display: inline-flex;
+      justify-content: center;
+      background: url('https://img5.168trucker.com/topic/images/worldCup/field.png') no-repeat;
     }
   }
   .fade-enter-active, .fade-leave-active {

@@ -1,6 +1,6 @@
 import fetch from './ajax'
 
-export const DEBUG = false // 是否开发模式
+export const DEBUG = true // 是否开发模式
 const HTTP_DEV = '/bx' // 测试地址
 
 const HTTPS = 'https://topic.vr0101.com' // 正式地址

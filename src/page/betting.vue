@@ -29,13 +29,28 @@
       @select="select">
     </Guessing>
     <!-- 淘汰赛 -->
-    <eliminate  v-if="showEliminateResult"
+    <eliminate  v-if="showEliminateResult&& cards.type!=1 &&cards.cate==1"
       :selectObj="selectimg"
       :matchList="cards.matchList"
+      :cards="cards"
       @showEliminate="showEliminate"
       @select="select">
-
     </eliminate>
+    <!--积分 -->
+    <Integral  v-if="showEliminateResult && cards.type!=1 &&cards.cate==2"
+      :selectObj="selectimg"
+      :cards="cards"
+      @showEliminate="showEliminate"
+      @submit="submit">
+    </Integral>
+    <!-- 小礼品 -->
+    <SmallGift  v-if="showEliminateResult&& cards.type!=1 && cards.cate==3"
+      :selectObj="selectimg"
+      :cards="cards"
+      @showEliminate="showEliminate"
+      @submit="submit">
+    </SmallGift>
+
     <toast :msg="toastMsg" v-if="toastState"></toast>
     <Rule v-show="showRuleStatus" @showRule="showRule"></Rule>
     <priceRule v-show="showPriceRuleStatus" @showPriceRule="showPriceRule"></priceRule>
@@ -48,6 +63,10 @@ import storage from '../store/storage.js'
 import priceRule from '../components/price-rule.vue'
 import Guessing from '../components/guessing.vue'
 import eliminate from '../components/eliminate.vue'
+// 积分
+import Integral from '../components/integral'
+// 小礼品
+import SmallGift from '../components/small-gift'
 import XHR from '../api'
 import toast from '../components/toast'
 export default {
@@ -71,6 +90,7 @@ export default {
       // 点击提交上锁
       lock: false,
       clickNum: 0,
+      userinfo: {},
       whiteList: ['oq10u1bjVsiy276-ExPUrTbK0fQY', 'oq10u1RPuGvQDdFGA7XuWccR1MDU', 'oq10u1fDhu3rJMpRT-cTyPvYjVt4'],
       cards: {},
       // 设置选中球队
@@ -82,7 +102,9 @@ export default {
     priceRule,
     toast,
     eliminate,
-    Guessing
+    Guessing,
+    Integral,
+    SmallGift
   },
   computed: {
     result () { return this.$store.state.selectObj },
@@ -98,6 +120,7 @@ export default {
     if (userinfo) {
       this.userinfo = JSON.parse(userinfo)
     }
+    // this.userinfo.uid = 'oq10u1bjVsiy276-ExPUrTbK0fQY' 测试
     // 清空状态管理
     this.$store.dispatch('initState')
   },
@@ -127,6 +150,14 @@ export default {
         let {status, data, message} = res.data
         if (!status) {
           this.cards = data
+          // let json = { // 测试淘汰赛
+          //   'type': 2,
+          //   'cate': 2, // 类型 1 比赛 2 小积分 3 小礼品
+          //   'integral': 3, // 积分 3 5 10 20
+          //   'giftName': '福田时代车模', // 小礼品名称
+          //   'giftImg': 'https://img5.168trucker.com/prizes/1/1.png' // 小礼品名称
+          // }
+          // this.cards = {...this.cards, ...json}
           // this.stroageTeams(data)
         } else {
           this.showToast(message)
@@ -156,7 +187,7 @@ export default {
     */
     showResult (item, index) {
       //  如果是淘汰赛走下面的方法
-      if (this.cards.type === 1) {
+      if (this.cards.type === 2) {
         this.showEliminate(item, index)
         return
       }
@@ -195,9 +226,10 @@ export default {
     },
     showEliminate (item, index) {
       let closeNum = this.getCookie('closeNum') ? this.getCookie('closeNum') : 0
-      let Eliminate = this.getCookie('Eliminate')
-      if (Eliminate) {
+      let isFlop = this.getCookie('isFlop')
+      if (isFlop) {
         this.showToast('今天已翻牌并提交，请明天再来')
+        return
       }
       if (item === '取消') { // 执行关闭做的操作
         closeNum++
@@ -209,10 +241,10 @@ export default {
         this.showEliminateResult = !this.showEliminateResult
         let index = this.selectIndexs.indexOf(this.selectIndex)
         this.selectIndexs.splice(index, 1)
+        this.getMatch()
         return
       }
       if (closeNum > 3) { // 今天翻牌次数用完
-        console.log(closeNum)
         this.showToast('今天翻牌机会已用完')
         return
       }
@@ -272,6 +304,17 @@ export default {
       if (!this.bettingStatus) {
         this.bettingStatus = 1
       }
+      if (this.cards.type === 2) {
+        this.$store.dispatch('setGifts', this.cards)
+        this.jump(`/BettingOk/${this.userinfo.uid}/${this.cards.type}/${this.cards.round}`)
+      }
+    },
+    // 淘汰赛提交
+    submit (json) {
+      json = {...this.cards, ...json}
+      this.$store.dispatch('setGifts', json)
+      this.showEliminateResult = !this.showEliminateResult
+      this.jump(`/BettingOk/${this.userinfo.uid}/${this.cards.type}/${this.cards.round}`)
     }
   }
 }

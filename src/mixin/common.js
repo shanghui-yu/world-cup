@@ -56,6 +56,16 @@ export default {
         return ''
       }
     },
+    fRandomBy (under, over) { // 从任意值开始至任意值结束 随机数
+      switch (arguments.length) {
+        case 1:
+          return parseInt(Math.random() * under + 1)
+        case 2:
+          return parseInt(Math.random() * (over - under + 1) + under)
+        default:
+          return 0
+      }
+    },
     getWxconfig () {
       XHR.getWechat({
         url: `${window.location.href.split('#')[0]}`

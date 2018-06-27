@@ -8,7 +8,7 @@
     <div class="main-bg">
       <div class="main" v-if="!SubmitStatus">
         <img :src="`https://img5.168trucker.com/topic/images/worldCup/betting-title${betting.length}.png`" class="title" alt="">
-        <ul>
+        <ul v-if="type=='1'">
           <li v-for="(item,index) in betting" :key="index">
             <div class="team">
               <figure>
@@ -36,6 +36,56 @@
                 <img :src="item.team_B_logo" alt="">
               </figure>
               <span>{{item.team_B_name}}</span>
+            </div>
+          </li>
+        </ul>
+        <ul v-if="type=='2'">
+           <!-- 淘汰赛 -->
+          <li v-for="(item,index) in betting" :key="index" v-if="gifts.cate && gifts.cate==1">
+            <div class="team">
+              <figure>
+                <img :src="item.team_A_logo" alt="">
+              </figure>
+              <span>{{item.team_A_name}}</span>
+            </div>
+            <div class="team">
+              <figure>
+                <img
+                  src="https://img5.168trucker.com/topic/images/worldCup/win.png"
+                  v-if="item.teamType=='胜'" alt="">
+                <img src="https://img5.168trucker.com/topic/images/worldCup/fail.png"
+                  v-if="item.teamType=='负'"
+                  alt="">
+                <img
+                  src="https://img5.168trucker.com/topic/images/worldCup/flat.png"
+                  v-if="item.teamType=='平'"
+                  alt="">
+              </figure>
+              <span>{{item.teamType}}</span>
+            </div>
+            <div class="team">
+              <figure>
+                <img :src="item.team_B_logo" alt="">
+              </figure>
+              <span>{{item.team_B_name}}</span>
+            </div>
+          </li>
+          <!-- 积分 -->
+          <li v-if="gifts.cate && gifts.cate==2">
+            <div class="team">
+              <figure>
+                <img :src="`https://img5.168trucker.com${gifts.img}`" alt="">
+              </figure>
+              <span>{{gifts.integral}}积分</span>
+            </div>
+          </li>
+          <!-- 小礼品 -->
+          <li v-if="gifts.cate && gifts.cate==3">
+            <div class="team">
+              <figure>
+                <img :src="gifts.giftImg" alt="">
+              </figure>
+              <span>{{gifts.giftName}}</span>
             </div>
           </li>
         </ul>
@@ -81,7 +131,8 @@ export default {
   },
   computed: {
     betting () { return this.$store.state.selectObj },
-    MatchRes () { return this.$store.state.MatchRes }
+    MatchRes () { return this.$store.state.MatchRes },
+    gifts () { return this.$store.state.gifts }
   },
   created () {
     this.uid = this.$route.params.uid
@@ -118,11 +169,13 @@ export default {
       }
     },
     submit () {
+      // 白名单
       let periods = storage.get('periods')
       if (this.whiteList.indexOf(this.uid) > -1 && periods && periods === this.round) {
         this.SubmitStatus = true
         return
       }
+      // 白名单结束
       if (this.lock) {
         return
       }
@@ -132,11 +185,33 @@ export default {
         type: this.type,
         matchRes: this.MatchRes.join(',')
       }
+      if (this.type === '2') {
+        json.cate = this.gifts.cate
+        switch (this.gifts.cate) {
+          case 2:
+            json.integral = this.gifts.integral
+            delete json.matchRes
+            break
+          case 3:
+            json.giftName = this.gifts.giftName
+            delete json.matchRes
+            break
+        }
+      }
+
       XHR.postMyJingCai(json).then(res => {
         this.lock = false
-        let {status, message} = res.data
+        this.setCookie('isFlop', 1) // 设置抢购过
+        let {status, message, isSlow} = res.data
         if (!status) {
           this.checkIsperiods()
+
+          // 淘汰赛如果库存没有做的操作
+          if (this.type === '2' && isSlow) {
+            this.showToast('手慢了奖品没有了')
+            return
+          }
+
           this.SubmitStatus = true
         } else {
           this.showToast(message)

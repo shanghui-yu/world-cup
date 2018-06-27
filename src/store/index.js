@@ -6,7 +6,8 @@ const store = new Vuex.Store({
     selectObj: [],
     // 提交的球队投注信息
     indexs: [],
-    MatchRes: ['', '', '']
+    MatchRes: ['', '', ''],
+    gifts: {}
   },
   mutations: {
     selectObjFun (state, b) {
@@ -22,6 +23,9 @@ const store = new Vuex.Store({
       state.MatchRes = ['', '', '']
       state.indexs = []
       state.selectObj = []
+    },
+    setGifts (state, json) {
+      state.gifts = json
     }
   },
   actions: {
@@ -36,6 +40,9 @@ const store = new Vuex.Store({
     },
     initState (context) {
       context.commit('initState')
+    },
+    setGifts (context, json) {
+      context.commit('setGifts', json)
     }
   }
 })
