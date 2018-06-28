@@ -180,16 +180,18 @@ export default {
         return
       }
       this.lock = true
+      let time = +new Date()
       let json = {
+        time,
         uid: this.uid,
         type: this.type,
         matchRes: this.MatchRes.join(',')
       }
       if (this.type === '2') {
-        json.cate = this.gifts.cate
+        json.cate = Number(this.gifts.cate)
         switch (this.gifts.cate) {
           case 2:
-            json.integral = this.gifts.integral
+            json.integral = Number(this.gifts.integral)
             delete json.matchRes
             break
           case 3:
@@ -198,6 +200,7 @@ export default {
             break
         }
       }
+      console.log(json)
 
       XHR.postMyJingCai(json).then(res => {
         this.lock = false

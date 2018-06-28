@@ -27,6 +27,25 @@
             </div>
           </div>
         </li>
+        <li v-for="(item ,index) in knockout" :key="index">
+          <h3 class="title">第{{item.day}}轮</h3>
+          <div class="betting-box">
+            <div class="header">
+              投注方式：{{item.number.length}}串1
+              <div class="result" v-if="item.integral!=null">开奖结果：{{item.integral}}</div>
+            </div>
+            <div class="footer">
+              <div
+                :class="[ele=='0'?'flat':'',ele=='1'?'win':'',ele=='-1'?'fail':'']"
+                v-if="ele" v-for="(ele,inx) in item.matchRes" :key="inx">
+                <figure>
+                  <img :src="item.matchList[inx].team_A_logo" alt="">
+                  <figcaption>{{item.matchList[inx].team_A_name}}</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </li>
         <li class="data-null" v-if="!jingc.length">暂无竞猜 </li>
       </ul>
     </div>
@@ -48,6 +67,7 @@ export default {
       showPriceRuleStatus: false,
       uid: 'oq10u1eEnWdb-mCZw8fJXWP0_lEo', // 用户openid
       jingc: [],
+      knockout: [],
       rounds: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二', '十三', '十四', '十五', '十六', '十七'],
       teams: []
     }
@@ -82,6 +102,7 @@ export default {
         let {status, data} = res.data
         if (!status && data) {
           this.jingc = this.picing(data.group)
+          this.knockout = this.picing(data.knockout)
         }
       })
     },
