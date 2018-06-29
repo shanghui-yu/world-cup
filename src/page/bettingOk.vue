@@ -200,26 +200,30 @@ export default {
             break
         }
       }
-      console.log(json)
+      let now = +new Date()
+      let endTime = +new Date('2018-06-30 22:00:00')
+      if(now<=endTime){
+        this.checkIsperiods()
+        this.SubmitStatus = true
+      }else{
+        XHR.postMyJingCai(json).then(res => {
+          this.lock = false
+          this.setCookie('isFlop', 1) // 设置是否翻过牌
+          let {status, message, isSlow} = res.data
+          if (!status) {
+            this.checkIsperiods()
+            // 淘汰赛如果库存没有做的操作
+            if (this.type === '2' && isSlow) {
+              this.showToast('手慢了奖品没有了')
+              return
+            }
 
-      XHR.postMyJingCai(json).then(res => {
-        this.lock = false
-        this.setCookie('isFlop', 1) // 设置是否翻过牌
-        let {status, message, isSlow} = res.data
-        if (!status) {
-          this.checkIsperiods()
-
-          // 淘汰赛如果库存没有做的操作
-          if (this.type === '2' && isSlow) {
-            this.showToast('手慢了奖品没有了')
-            return
+            this.SubmitStatus = true
+          } else {
+            this.showToast(message)
           }
-
-          this.SubmitStatus = true
-        } else {
-          this.showToast(message)
-        }
-      })
+        })
+      }
     }
   }
 }
