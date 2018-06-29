@@ -14,11 +14,13 @@
     </footer>
     <Rule v-show="showRuleStatus" @showRule="showRule"></Rule>
     <priceRule v-show="showPriceRuleStatus" @showPriceRule="showPriceRule"></priceRule>
+    <Rotice v-show="showRoticeStatus" @showRotice="showRotice"></Rotice>
   </div>
 </template>
 
 <script>
 import Rule from '../components/rule'
+import Rotice from '../components/notice'
 import priceRule from '../components/price-rule.vue'
 import storage from '../store/storage.js'
 import XHR from '../api'
@@ -29,6 +31,7 @@ export default {
       top: '530px',
       beginAnimation: false,
       showRuleStatus: false,
+      showRoticeStatus:false,
       showBtn: false,
       user: {},
       sourceNumber: 1,
@@ -37,6 +40,7 @@ export default {
   },
   components: {
     Rule,
+    Rotice,
     priceRule
   },
   created () {
@@ -70,7 +74,16 @@ export default {
     this.getMyJingCai()
   },
   mounted () {
-
+    // 显示公告
+    let now = +new Date()
+    let endTime = +new Date('2018-06-30 22:00:00')
+    if(now<=endTime){
+      let notice = this.getCookie('notice')
+      if(!notice){
+        this.setCookie('notice',1)
+        this.showRotice()
+      }
+    }
   },
   methods: {
     showRule () {
@@ -88,6 +101,9 @@ export default {
     toPrece () {
       ga('send', 'event', '点击我的竞猜', this.sourceNumber, this.user.nickname)
       this.jump(`/MeJingc/${this.user.uid}`)
+    },
+    showRotice(){
+      this.showRoticeStatus = !this.showRoticeStatus
     },
     getMyJingCai () {
       let time = +new Date()

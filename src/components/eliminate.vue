@@ -33,9 +33,9 @@
        <div class="win" @click="select('胜')">
          <figure><img src="https://img5.168trucker.com/topic/images/worldCup/win.png" alt=""></figure>
        </div>
-       <div class="flat" @click="select('平')">
+       <!-- <div class="flat" @click="select('平')">
          <figure><img src="https://img5.168trucker.com/topic/images/worldCup/flat.png" alt=""></figure>
-      </div>
+      </div> -->
        <div class="fail" @click="select('负')">
          <figure><img src="https://img5.168trucker.com/topic/images/worldCup/fail.png" alt=""></figure>
       </div>
@@ -288,17 +288,11 @@ export default {
       >div{
         display: flex;
         flex: 1;
-        align-content: center;
+        justify-content: center;
         figure{
           width: 145px;
           height: 145px;
         }
-      }
-      .flat{
-        justify-content: center;
-      }
-      .fail{
-        justify-content: flex-end;
       }
     }
   }
