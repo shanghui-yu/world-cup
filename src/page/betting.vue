@@ -115,11 +115,11 @@ export default {
     this.getWxconfig()
     this.hideshare()
     this.share()
-    this.getMatch()
     let userinfo = storage.get('userInfoWorldCup')
     if (userinfo) {
       this.userinfo = JSON.parse(userinfo)
     }
+    this.getMatch()
     // this.userinfo.uid = 'oq10u1bjVsiy276-ExPUrTbK0fQY' 测试
     // 清空状态管理
     this.$store.dispatch('initState')
@@ -146,19 +146,12 @@ export default {
     },
     // 获取竞猜数据
     getMatch () {
-      XHR.getJingCai().then(res => {
-        let {status, data, message} = res.data
+      let json = {uid:this.userinfo.uid}
+      XHR.getJingCai(json).then(res => {
+        let {status, data,token, message} = res.data
         if (!status) {
+          data.token = token
           this.cards = data
-          // let json = { // 测试淘汰赛
-          //   'type': 2,
-          //   'cate': 2, // 类型 1 比赛 2 小积分 3 小礼品
-          //   'integral': 3, // 积分 3 5 10 20
-          //   'giftName': '福田时代车模', // 小礼品名称
-          //   'giftImg': 'https://img5.168trucker.com/prizes/1/1.png' // 小礼品名称
-          // }
-          // this.cards = {...this.cards, ...json}
-          // this.stroageTeams(data)
         } else {
           this.showToast(message)
         }

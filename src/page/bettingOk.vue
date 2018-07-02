@@ -189,6 +189,7 @@ export default {
       }
       if (this.type === '2') {
         json.cate = Number(this.gifts.cate)
+        json.token = this.gifts.token
         switch (this.gifts.cate) {
           case 2:
             json.integral = Number(this.gifts.integral)
