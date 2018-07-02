@@ -8,7 +8,7 @@
     </div>
 
     <footer :class="[showBtn?'show':'']">
-      <a href="#/Rank" @click.prevent="torank" class="rank-btn">排行榜</a>
+      <!-- <a href="#/Rank" @click.prevent="torank" class="rank-btn">排行榜</a> -->
       <a href="#/Betting" class="to-join">立即加入</a>
       <a href="#/MeJingc" @click.prevent="toPrece" class="my-action">我的竞猜</a>
     </footer>
@@ -202,6 +202,7 @@ export default {
         width: 471px;
         height: 149px;
         margin-left: -30px;
+        margin-left: 135px;
       }
       .my-action{
         background: url('https://img5.168trucker.com/topic/images/worldCup/my-jingcai-btn.png') 50% 50% no-repeat;
