@@ -8,7 +8,7 @@
     </div>
 
     <footer :class="[showBtn?'show':'']">
-      <!-- <a href="#/Rank" @click.prevent="torank" class="rank-btn">排行榜</a> -->
+      <a href="#/Rank" @click.prevent="torank" class="rank-btn">排行榜</a>
       <a href="#/Betting" class="to-join">立即加入</a>
       <a href="#/MeJingc" @click.prevent="toPrece" class="my-action">我的竞猜</a>
     </footer>
@@ -31,7 +31,7 @@ export default {
       top: '530px',
       beginAnimation: false,
       showRuleStatus: false,
-      showRoticeStatus:false,
+      showRoticeStatus: false,
       showBtn: false,
       user: {},
       sourceNumber: 1,
@@ -76,11 +76,11 @@ export default {
   mounted () {
     // 显示公告
     let now = +new Date()
-    let endTime = +new Date('2018-06-30 22:00:00')
-    if(now<=endTime){
-      let notice = this.getCookie('notice')
-      if(!notice){
-        this.setCookie('notice',1)
+    let endTime = +new Date('2018-07-05')
+    if (now <= endTime) {
+      let notice = this.getCookie('notice1')
+      if (!notice) {
+        this.setCookie('notice1', 1)
         this.showRotice()
       }
     }
@@ -102,7 +102,7 @@ export default {
       ga('send', 'event', '点击我的竞猜', this.sourceNumber, this.user.nickname)
       this.jump(`/MeJingc/${this.user.uid}`)
     },
-    showRotice(){
+    showRotice () {
       this.showRoticeStatus = !this.showRoticeStatus
     },
     getMyJingCai () {
@@ -202,7 +202,6 @@ export default {
         width: 471px;
         height: 149px;
         margin-left: -30px;
-        margin-left: 135px;
       }
       .my-action{
         background: url('https://img5.168trucker.com/topic/images/worldCup/my-jingcai-btn.png') 50% 50% no-repeat;
