@@ -13,6 +13,7 @@
 <script>
 import storage from '../store/storage.js'
 export default {
+  props: ['round'],
   data () {
     return {
       userinfo: {}
@@ -25,7 +26,7 @@ export default {
         this.userinfo = JSON.parse(userinfo)
       }
       ga('send', 'event', '点击补全信息', '世界杯活动', this.userinfo.nickname)
-      this.jump('/Submit')
+      this.jump(`/Submit/${this.round}`)
     }
   }
 }

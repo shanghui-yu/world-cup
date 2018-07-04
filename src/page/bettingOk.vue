@@ -91,7 +91,7 @@
         </ul>
         <div class="next" @click="submit">下一步</div>
       </div>
-      <SubmitOk v-else></SubmitOk>
+      <SubmitOk v-else :round="round"></SubmitOk>
     </div>
     <toast :msg="toastMsg" v-if="toastState"></toast>
     <Rule v-show="showRuleStatus" @showRule="showRule"></Rule>
@@ -197,16 +197,23 @@ export default {
             break
           case 3:
             json.giftName = this.gifts.giftName
+            json.giftId = this.gifts.giftId
             delete json.matchRes
             break
         }
       }
       let now = +new Date()
       let endTime = +new Date('2018-06-30 22:00:00')
-      if(now<=endTime){
+      if (now <= endTime) {
         this.checkIsperiods()
         this.SubmitStatus = true
-      }else{
+      } else {
+        let userInfoOk = storage.get('userInfoOk')
+        if (!userInfoOk) {
+          storage.set('metchInfo', json)
+          this.jump(`/Submit/${this.round}`)
+          return
+        }
         XHR.postMyJingCai(json).then(res => {
           this.lock = false
           this.setCookie('isFlop', 1) // 设置是否翻过牌
@@ -214,12 +221,18 @@ export default {
           if (!status) {
             this.checkIsperiods()
             // 淘汰赛如果库存没有做的操作
-            if (this.type === '2' && isSlow) {
-              this.showToast('手慢了奖品没有了')
-              return
+            if (this.type === '2') {
+              if (isSlow) {
+                this.showToast('手慢了奖品没有了')
+              } else {
+                this.showToast('提交成功')
+                setTimeout(() => {
+                  this.jump('/')
+                }, 2e3)
+              }
+            } else {
+              this.SubmitStatus = true
             }
-
-            this.SubmitStatus = true
           } else {
             this.showToast(message)
           }

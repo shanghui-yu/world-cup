@@ -46,7 +46,7 @@ export default new Router({
       component: BettingOk
     },
     {
-      path: '/Submit',
+      path: '/Submit/:round',
       name: 'Submit',
       component: Submit
     }

@@ -32,7 +32,9 @@ export default {
       showPriceRuleStatus: false,
       SubmitStatus: 1,
       loading: false,
-      userinfo: {}
+      userinfo: {},
+      round: '',
+      lock: false
     }
   },
   components: {
@@ -47,6 +49,7 @@ export default {
     this.getWxconfig()
     this.hideshare()
     this.share()
+    this.round = this.$route.params.round
     let userinfo = storage.get('userInfoWorldCup')
     if (userinfo) {
       this.userinfo = JSON.parse(userinfo)
@@ -93,11 +96,45 @@ export default {
         let {status, message} = res.data
         if (!status) {
           this.showToast('提交成功')
+          storage.set('userInfoOk', json)
+          // 提交翻牌成绩
+          this.macthSubmit()
+        } else {
+          this.showToast(message)
+        }
+      })
+    },
+    checkIsperiods () {
+      let periods = storage.get('periods')
+      if (!periods || (periods && periods !== this.round)) {
+        storage.set('periods', this.round)
+      }
+    },
+    macthSubmit () {
+      let metchInfo = storage.get('metchInfo')
+      metchInfo = JSON.parse(metchInfo)
+      if (this.lock) {
+        return
+      }
+      this.lock = true
+      XHR.postMyJingCai(metchInfo).then(res => {
+        this.lock = false
+        this.setCookie('isFlop', 1) // 设置是否翻过牌
+        let {status, message, isSlow} = res.data
+        if (!status) {
+          this.checkIsperiods()
+          // 淘汰赛如果库存没有做的操作
+          if (metchInfo.type === '2' && isSlow) {
+            this.showToast('手慢了奖品没有了')
+          }
           setTimeout(() => {
+            storage.remove('metchInfo') // 移除本次提交信息
             this.jump('/')
           }, 2e3)
         } else {
-          this.showToast(message)
+          setTimeout(() => {
+            this.showToast(message)
+          }, 2e3)
         }
       })
     }
@@ -107,7 +144,7 @@ export default {
 
 <style scoped lang="less">
   .waaper{
-    height: 100%;
+    min-height: 100%;
     width: 100%;
     overflow: hidden;
     background: url('https://img5.168trucker.com/topic/images/worldCup/bg-two.jpg') 50% 50% no-repeat;
@@ -118,7 +155,6 @@ export default {
   }
   .main-bg{
     margin:0 auto;
-    position: relative;
     width: 690px;
     background: url('https://img5.168trucker.com/topic/images/worldCup/model-bg.png') no-repeat;
     height: 1058px;
