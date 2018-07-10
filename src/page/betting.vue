@@ -94,7 +94,9 @@ export default {
       whiteList: ['oq10u1bjVsiy276-ExPUrTbK0fQY', 'oq10u1RPuGvQDdFGA7XuWccR1MDU', 'oq10u1fDhu3rJMpRT-cTyPvYjVt4'],
       cards: {},
       // 设置选中球队
-      selectObj: []
+      selectObj: [],
+      // 点击关闭第二次的时候提醒
+      lockBetting:false
     }
   },
   components: {
@@ -225,9 +227,8 @@ export default {
         return
       }
       if (item === '取消') { // 执行关闭做的操作
-        closeNum++
-        this.setCookie('closeNum', closeNum)
-        if (closeNum === 3) {
+        if (closeNum == 2 && !this.lockBetting) {
+          this.lockBetting = true
           this.showToast('每天仅有三次翻牌机会哦，您已经翻牌两次了')
           return
         }
@@ -237,7 +238,7 @@ export default {
         this.getMatch()
         return
       }
-      if (closeNum > 3) { // 今天翻牌次数用完
+      if (closeNum >= 3) { // 今天翻牌次数用完
         this.showToast('今天翻牌机会已用完')
         return
       }
@@ -251,6 +252,8 @@ export default {
         return
       }
       if (index) {
+        closeNum++
+        this.setCookie('closeNum', closeNum)
         if (this.selectIndexs.indexOf(index) > -1) {
           return
         }
