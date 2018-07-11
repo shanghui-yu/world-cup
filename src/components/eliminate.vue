@@ -64,7 +64,6 @@ export default {
   },
   created () {
     this.randomTeam = Math.random()
-    console.log(this.indexs, 666)
   },
   mounted () {
     // 随机获取球队
