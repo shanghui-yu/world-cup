@@ -96,7 +96,7 @@ export default {
       // 设置选中球队
       selectObj: [],
       // 点击关闭第二次的时候提醒
-      lockBetting:false
+      lockBetting: false
     }
   },
   components: {
@@ -122,7 +122,7 @@ export default {
       this.userinfo = JSON.parse(userinfo)
     }
     this.getMatch()
-    // this.userinfo.uid = 'oq10u1bjVsiy276-ExPUrTbK0fQY' 测试
+    // this.userinfo.uid = 'oq10u1bjVsiy276-ExPUrTbK0fQY' // 测试
     // 清空状态管理
     this.$store.dispatch('initState')
   },
@@ -148,9 +148,9 @@ export default {
     },
     // 获取竞猜数据
     getMatch () {
-      let json = {uid:this.userinfo.uid}
+      let json = {uid: this.userinfo.uid}
       XHR.getJingCai(json).then(res => {
-        let {status, data,token, message} = res.data
+        let {status, data, token, message} = res.data
         if (!status) {
           data.token = token
           this.cards = data
@@ -186,6 +186,7 @@ export default {
         this.showEliminate(item, index)
         return
       }
+
       //  如果是正常比赛走下面
       if (item === '取消') {
         this.showResultStatus = !this.showResultStatus
@@ -251,7 +252,7 @@ export default {
         this.showToast('每人每轮只能选择三次')
         return
       }
-      if (index) {
+      if (index || index === 0) {
         closeNum++
         this.setCookie('closeNum', closeNum)
         if (this.selectIndexs.indexOf(index) > -1) {
