@@ -9,12 +9,13 @@
 
     <footer :class="[showBtn?'show':'']">
       <a href="#/Rank" @click.prevent="torank" class="rank-btn">排行榜</a>
-      <a href="#/Betting" class="to-join">立即加入</a>
+      <a href="#/Betting" @click.prevent="toJoin" class="to-join">立即加入</a>
       <a href="#/MeJingc" @click.prevent="toPrece" class="my-action">我的竞猜</a>
     </footer>
     <Rule v-show="showRuleStatus" @showRule="showRule"></Rule>
     <priceRule v-show="showPriceRuleStatus" @showPriceRule="showPriceRule"></priceRule>
     <Rotice v-show="showRoticeStatus" @showRotice="showRotice"></Rotice>
+    <toast :msg="toastMsg" v-if="toastState"></toast>
   </div>
 </template>
 
@@ -24,9 +25,12 @@ import Rotice from '../components/notice'
 import priceRule from '../components/price-rule.vue'
 import storage from '../store/storage.js'
 import XHR from '../api'
+import toast from '../components/toast'
 export default {
   data () {
     return {
+      toastMsg: '',
+      toastState: false,
       mtop: '200px',
       top: '530px',
       beginAnimation: false,
@@ -41,6 +45,7 @@ export default {
   components: {
     Rule,
     Rotice,
+    toast,
     priceRule
   },
   created () {
@@ -86,6 +91,14 @@ export default {
     }
   },
   methods: {
+    showToast (msg) {
+      if (this.toastState) return
+      this.toastMsg = msg
+      this.toastState = true
+      setTimeout(() => {
+        this.toastState = false
+      }, 2e3)
+    },
     showRule () {
       ga('send', 'event', '点击活动规则', this.sourceNumber, this.user.nickname)
       this.showRuleStatus = !this.showRuleStatus
@@ -97,6 +110,9 @@ export default {
     torank () {
       ga('send', 'event', '点击排行榜', this.sourceNumber, this.user.nickname)
       this.jump('/Rank')
+    },
+    toJoin () {
+      this.showToast('活动已结束，明天中午12:00将准时开启幸运大转盘！')
     },
     toPrece () {
       ga('send', 'event', '点击我的竞猜', this.sourceNumber, this.user.nickname)

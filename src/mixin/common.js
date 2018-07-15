@@ -118,10 +118,10 @@ export default {
           link: 'https://topic.vr0101.com/worldCup/index.html',
           imgUrl: 'https://img5.168trucker.com/topic/images/worldCup/share.png',
           success: (res) => {
-            let qaShare = this.getCookie('worldShare')
-            if (!qaShare) {
-              this.addIntegral(user.uid, 1)
-            }
+            // let qaShare = this.getCookie('worldShare')
+            // if (!qaShare) {
+            //   this.addIntegral(user.uid, 1)
+            // }
             ga('send', 'event', '用户分享', '朋友圈', user.nickname)
           },
           cancel: (res) => {
@@ -135,10 +135,10 @@ export default {
           link: 'https://topic.vr0101.com/worldCup/index.html',
           imgUrl: 'https://img5.168trucker.com/topic/images/worldCup/share.png',
           success: (res) => {
-            let qaShare = this.getCookie('worldShare')
-            if (!qaShare) {
-              this.addIntegral(user.uid, 1)
-            }
+            // let qaShare = this.getCookie('worldShare')
+            // if (!qaShare) {
+            //   this.addIntegral(user.uid, 1)
+            // }
             ga('send', 'event', '用户分享', '发送给朋友', user.nickname)
           },
           cancel: function () {

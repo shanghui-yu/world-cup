@@ -150,12 +150,12 @@ export default {
     getMatch () {
       let json = {uid: this.userinfo.uid}
       XHR.getJingCai(json).then(res => {
-        let {status, data, token, message} = res.data
-        if (!status) {
+        let {status, data, token} = res.data
+        if (!status && token) {
           data.token = token
           this.cards = data
         } else {
-          this.showToast(message)
+          this.showToast(data.errMsg)
         }
       })
     },
